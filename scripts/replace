@@ -1,5 +1,11 @@
 #!/usr/bin/node
 
+// I was not impressed to sed with regard to replacing a pattern with all the contents of an HTML file
+// so I hacked something together in node.
+
+// This script provides a simple search and replace funtionality that does 
+// not get affected by special characters and new lines.
+
 var args = process.argv.slice(2);
 
 if (args.length !== 3) {
