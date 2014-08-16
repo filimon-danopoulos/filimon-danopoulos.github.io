@@ -10,4 +10,4 @@
         <link rel="stylesheet" href="/css/blog.css">
     </head>
     <body class="text-center container">
-        <h1>Programming and stuff...</h1>
+        <h1 class="blog-title">Programming and stuff...</h1>
