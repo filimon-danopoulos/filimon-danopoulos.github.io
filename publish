@@ -1,0 +1,24 @@
+#!/usr/bin/bash
+
+if [ "$#" != "1" ]
+then
+    echo "You have to supply a commit message!"
+    exit 1
+fi
+
+# We assign parameters to named variables.
+CommitMessage=$1
+
+# This scripts makes publishing changes simpler as publishing something is very repetitive.
+
+# Generate the content
+./generate
+
+# Add all changes to git
+git add --all
+
+# Commit them with the supplied message
+git commit -m "$CommitMessage"
+
+# Push the changes, this will fail if nothing has been previously pushed so that credentials are cached.
+git push
