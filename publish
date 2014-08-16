@@ -20,5 +20,5 @@ git add --all
 # Commit them with the supplied message
 git commit -m "$CommitMessage"
 
-# Push the changes, this will fail if nothing has been previously pushed so that credentials are cached.
+# Push the changes
 git push
