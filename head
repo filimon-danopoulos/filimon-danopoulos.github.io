@@ -8,5 +8,5 @@
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     </head>
-    <body class="text-center">
+    <body class="text-center container">
         <h1>Programming and stuff...</h1>
