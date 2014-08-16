@@ -1,0 +1,15 @@
+#!/usr/bin/node
+
+var args = process.argv.slice(2);
+
+if (args.length !== 3) {
+    throw "Invalid number of args! Usage: node <source> <pattern> <replacement>";
+}
+var source = args[0];
+var pattern = args[1];
+var replacement = args[2];
+
+var regex = new RegExp(pattern);
+var result = source.replace(pattern, replacement);
+
+console.log(result);
