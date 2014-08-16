@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 # This script generates the HTML in index.html from any post that exists in the folder posts
-# Requies the markdown program to run. Run `sudo pacman -S markdown` to install it.
+# If you have never run this before, run scripts/install first.
 
 # Clear the index.html file and load the head of the file
 cat "templates/page_head.html" > index.html 
