@@ -15,9 +15,9 @@ do
     # Parse the markdown to HTML and append it to HTML file 
     markdown $post >> index.html
     # Generate a timestamp from the file name and append it to the document.
-    echo "<p class=\" post-date \">" >> index.html
+    echo "<div class=\" text-center \"> <p class=\" post-date \">" >> index.html
     echo "$post" | grep -o '[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}' >> index.html
-    echo "</p>" >> index.html
+    echo "</p> </div>" >> index.html
     # Close the wrapping div.
     echo "</div>" >> index.html
 done
