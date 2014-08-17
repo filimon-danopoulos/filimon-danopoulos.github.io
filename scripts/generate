@@ -28,7 +28,7 @@ do
     # Extract the date from the file name    
     postDate=$(echo "$postSource" | grep -o '[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}') 
     # Insert the date into the HTML file placeholder
-    cat "$htmlPostFileName" | sed "s/--date--/$postDate/i" > tmp
+    cat "$htmlPostFileName" | sed "s/--date--/\/$postDate/i" > tmp
     mv tmp "$htmlPostFileName"
     
     # Append newly created post to index.html document
