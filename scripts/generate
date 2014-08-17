@@ -3,6 +3,9 @@
 # This script generates the HTML in index.html from any post that exists in the folder posts
 # If you have never run this before, run scripts/install first.
 
+# Remove all previously compiled posts
+rm -rf "posts/*"
+
 # Clear the index.html file and load the head of the file
  cat "templates/page_head.html" > index.html 
 
@@ -22,7 +25,10 @@ do
     mv tmp "$htmlPostFileName"
     
     # Insert post label from file name
-    echo $(echo "$htmlPostFileName" | grep -o '--*')
+    # First remove the date part, then remove the file extension, lastly replace hyphens with spaces
+    postHeader=$(echo "$htmlPostFileName" | cut -d'_' -f2 | cut -d'.' -f1 | tr '-' ' ')
+    cat "$htmlPostFileName" | sed "s/--header--/$postHeader/i" > tmp
+    mv tmp "$htmlPostFileName"
     
     # Add href to link in header
     cat "$htmlPostFileName" | sed "s|--href--|/$htmlPostFileName|i" > tmp
@@ -41,17 +47,11 @@ do
     cat "templates/page_head.html" \
         "$htmlPostFileName" \
         "templates/single_post_footer.html" \
-        "templates/page_tail.html" \
-        > tmp
+        "templates/page_tail.html" > tmp
     mv tmp "$htmlPostFileName" 
     
-    cat "$htmlPostFileName"
-    echo ;
-    echo ;
 done
 
 # Append the tail of the document so that we have comple the HTML
 cat "templates/page_tail.html" >> index.html
 
-# Dump the file so that we can see what is generated. 
-cat index.html
