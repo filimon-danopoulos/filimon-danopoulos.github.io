@@ -12,7 +12,7 @@ fi
 CommitMessage=$1
 
 # Generate the content
-./generate > /dev/null
+./scripts/generate > /dev/null
 
 # Add all changes to git
 git add --all
