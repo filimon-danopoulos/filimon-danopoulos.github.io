@@ -21,6 +21,9 @@ do
     cat "templates/post.html" | sed "/$postPattern/ r $htmlPostFileName" | sed "/$postPattern/ d" > tmp
     mv tmp "$htmlPostFileName"
     
+    # Insert post label from file name
+    echo $(echo "$htmlPostFileName" | grep -o '--*')
+    
     # Add href to link in header
     cat "$htmlPostFileName" | sed "s|--href--|/$htmlPostFileName|i" > tmp
     mv tmp "$htmlPostFileName"
