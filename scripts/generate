@@ -4,34 +4,44 @@
 # If you have never run this before, run scripts/install first.
 
 # Clear the index.html file and load the head of the file
-cat "templates/page_head.html" > index.html 
+ cat "templates/page_head.html" > index.html 
 
 # Loop over each markdown file in the post_src directory.
 # A post is assumed to start with a date e.g. 2014-08-16
 for postSource in $(find "post_src/" -name "*.md")
 do
-    # Load the post from the template
-    post=$(cat "templates/post.html")
+    # Generate the post name from the source markdown file
+    htmlPostFileName=$(echo $postSource | sed -e 's/_src\//s\//' -e 's/\.md/\.html/')
     
-    # Generate the post content
-    postContent=$(markdown $postSource)
-    # Insert the content into the template
-    post=$(./scripts/replace "$(echo $post)" "--content--" "$(echo $postContent)")
+    # Generate the post content and save it in the destination HTML file
+    markdown "$postSource" > "$htmlPostFileName"
     
+    postPattern="--content--"
+    # Apply the template to the content
+    cat "templates/post.html" | sed "/$postPattern/ r $htmlPostFileName" | sed "/$postPattern/ d" > tmp
+    mv tmp "$htmlPostFileName"
+    
+    # Add href to link in header
+    cat "$htmlPostFileName" | sed "s|--href--|$htmlPostFileName|i" > tmp
+    mv tmp "$htmlPostFileName"
+
     # Extract the date from the file name    
-    postDate=$(echo "$postSource" | grep -o '[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}')
-    # Insert the date into the template
-    post=$(echo $post | sed "s/--date--/$postDate/i")
+    postDate=$(echo "$postSource" | grep -o '[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}') 
+    # Insert the date into the HTML file placeholder
+    cat "$htmlPostFileName" | sed "s/--date--/$postDate/i" > tmp
+    mv tmp "$htmlPostFileName"
     
-    # Append newly created post to HTML document
-    echo $post >> index.html
+    # Append newly created post to index.html document
+    cat "$htmlPostFileName" >> index.html
+    
+    # Make the HTML file containing the post a real HTML document
+    cat "templates/page_head.html" "$htmlPostFileName" "templates/page_tail.html" > tmp
+    mv tmp "$htmlPostFileName" 
+    
 done
 
 # Append the tail of the document so that we have comple the HTML
 cat "templates/page_tail.html" >> index.html
 
-# Tidy up resulting HTML, tidy is a bit old. Can cause issues.
-tidy -im --tidy-mark 0 index.html
-
 # Dump the file so that we can see what is generated. 
-cat index.html
+# cat index.html
