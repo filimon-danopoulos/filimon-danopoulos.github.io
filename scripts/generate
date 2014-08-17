@@ -35,9 +35,16 @@ do
     cat "$htmlPostFileName" >> index.html
     
     # Make the HTML file containing the post a real HTML document
-    cat "templates/page_head.html" "$htmlPostFileName" "templates/page_tail.html" > tmp
+    cat "templates/page_head.html" \
+        "$htmlPostFileName" \
+        "templates/single_post_footer.html" \
+        "templates/page_tail.html" \
+        > tmp
     mv tmp "$htmlPostFileName" 
     
+    cat "$htmlPostFileName"
+    echo ;
+    echo ;
 done
 
 # Append the tail of the document so that we have comple the HTML
