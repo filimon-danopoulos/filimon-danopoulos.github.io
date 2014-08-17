@@ -22,13 +22,13 @@ do
     mv tmp "$htmlPostFileName"
     
     # Add href to link in header
-    cat "$htmlPostFileName" | sed "s|--href--|$htmlPostFileName|i" > tmp
+    cat "$htmlPostFileName" | sed "s|--href--|/$htmlPostFileName|i" > tmp
     mv tmp "$htmlPostFileName"
 
     # Extract the date from the file name    
     postDate=$(echo "$postSource" | grep -o '[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}') 
     # Insert the date into the HTML file placeholder
-    cat "$htmlPostFileName" | sed "s/--date--/\/$postDate/i" > tmp
+    cat "$htmlPostFileName" | sed "s/--date--/$postDate/i" > tmp
     mv tmp "$htmlPostFileName"
     
     # Append newly created post to index.html document
@@ -44,4 +44,4 @@ done
 cat "templates/page_tail.html" >> index.html
 
 # Dump the file so that we can see what is generated. 
-# cat index.html
+cat index.html
