@@ -1,6 +1,4 @@
-# about:blog part 1
-
-A run down of how I ended up hosting my blog here and the decision about technology.
+This post is a run down of how I ended up hosting my blog here and how I picked the technology.
 
 ## The search
 
