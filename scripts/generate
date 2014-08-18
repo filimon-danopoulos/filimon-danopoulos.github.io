@@ -3,16 +3,13 @@
 # This script generates the HTML in index.html from any post that exists in the folder posts
 # If you have never run this before, run scripts/install first.
 
-# Remove all previously compiled posts
-rm -rf "posts/*"
+#################################################
+### F U N C T I O N   D E C L A R A T I O N S ###
+#################################################
 
-# Clear the index.html file and load the head of the file
- cat "templates/page_head.html" > index.html 
-
-# Loop over each markdown file in the post_src directory.
-# A post is assumed to start with a date e.g. 2014-08-16
-for postSource in $(find "post_src/" -name "*.md")
-do
+generatePost() {
+    postSource=$1
+    
     # Generate the post name from the source markdown file
     htmlPostFileName=$(echo $postSource | sed -e 's/_src\//s\//' -e 's/\.md/\.html/')
     
@@ -40,8 +37,59 @@ do
     cat "$htmlPostFileName" | sed "s/--date--/$postDate/i" > tmp
     mv tmp "$htmlPostFileName"
     
-    # Append newly created post to index.html document
-    cat "$htmlPostFileName" >> index.html
+    echo "$htmlPostFileName"
+}
+
+generatePostPreview() {
+    postSource=$1
+    
+    previewFileName=$(echo $postSource | sed -e 's/post_src/previews/' -e 's/\.md/\.html/')
+    
+    # Generate the post content and save it in a temporary file
+    head -n 15  "$postSource" | markdown > "$previewFileName"
+    
+    postPattern="--content--"
+    # Apply the template to the content
+    cat "templates/preview.html" | sed "/$postPattern/ r $previewFileName" | sed "/$postPattern/ d" > tmp
+    mv tmp "$previewFileName"
+    
+    # Insert post label from file name
+    # First remove the date part, then remove the file extension, lastly replace hyphens with spaces
+    postHeader=$(echo "$previewFileName" | cut -d'_' -f2 | cut -d'.' -f1 | tr '-' ' ')
+    cat "$previewFileName" | sed "s/--header--/$postHeader/i" > tmp
+    mv tmp "$previewFileName"
+    
+    # Add href to link in header and in continuew button
+    cat "$previewFileName" | sed "s|--href--|/$previewFileName|g" > tmp
+    mv tmp "$previewFileName"
+
+    # Extract the date from the file name    
+    postDate=$(echo "$postSource" | grep -o '[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}') 
+    # Insert the date into the HTML file placeholder
+    cat "$previewFileName" | sed "s/--date--/$postDate/i" > tmp
+    mv tmp "$previewFileName"
+    
+    echo "$previewFileName"
+}
+
+# Remove all previously compiled posts
+rm -rf "posts/*"
+
+# Clear the index.html file and load the head of the file
+ cat "templates/page_head.html" > index.html 
+
+# Loop over each markdown file in the post_src directory.
+# A post is assumed to start with a date e.g. 2014-08-16
+for postSource in $(find "post_src/" -name "*.md")
+do
+    # Create a preview of the post
+    previewFileName=$(generatePostPreview "$postSource")
+    
+    # Append newly created preview to index.html document
+    cat "$previewFileName" >> index.html
+    
+    #Generate the entire post
+    htmlPostFileName=$(generatePost "$postSource")
     
     # Make the HTML file containing the post a real HTML document
     cat "templates/page_head.html" \
