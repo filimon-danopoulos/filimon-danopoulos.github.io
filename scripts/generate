@@ -59,8 +59,12 @@ generatePostPreview() {
     cat "$previewFileName" | sed "s/--header--/$postHeader/i" > tmp
     mv tmp "$previewFileName"
     
+    
+    # Generate the post name from the source markdown file
+    htmlPostFileName=$(echo $postSource | sed -e 's/_src\//s\//' -e 's/\.md/\.html/')
+    
     # Add href to link in header and in continuew button
-    cat "$previewFileName" | sed "s|--href--|/$previewFileName|g" > tmp
+    cat "$previewFileName" | sed "s|--href--|/$htmlPostFileName|g" > tmp
     mv tmp "$previewFileName"
 
     # Extract the date from the file name    
