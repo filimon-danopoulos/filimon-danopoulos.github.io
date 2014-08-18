@@ -98,7 +98,6 @@ do
     # Make the HTML file containing the post a real HTML document
     cat "templates/page_head.html" \
         "$htmlPostFileName" \
-        "templates/single_post_footer.html" \
         "templates/page_tail.html" > tmp
     mv tmp "$htmlPostFileName" 
     

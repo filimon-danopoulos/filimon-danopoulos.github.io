@@ -8,6 +8,13 @@ then
     exit 1
 fi
 
+
+read -p "Are you sure you want to publish (y or n)?" yesOrNo
+case $yesOrNo in
+    [Yy]* ) echo "Starting..." ;;
+    * ) echo "Exiting..." && exit 1 ;;
+esac
+
 # We assign parameters to named variables.
 CommitMessage=$1
 
