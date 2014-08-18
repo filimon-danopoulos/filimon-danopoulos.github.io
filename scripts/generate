@@ -31,6 +31,12 @@ generatePost() {
     cat "$htmlPostFileName" | sed "s|--href--|/$htmlPostFileName|i" > tmp
     mv tmp "$htmlPostFileName"
 
+    # Add word count metadata
+    metadata="Word count: "$(wc -w "$postSource" | cut -d' ' -f1)
+    # Insert the metadata into the HTML file placeholder
+    cat "$htmlPostFileName" | sed "s/--metadata--/$metadata/i" > tmp
+    mv tmp "$htmlPostFileName"
+
     # Extract the date from the file name    
     postDate=$(echo "$postSource" | grep -o '[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}') 
     # Insert the date into the HTML file placeholder
@@ -65,6 +71,12 @@ generatePostPreview() {
     
     # Add href to link in header and in continuew button
     cat "$previewFileName" | sed "s|--href--|/$htmlPostFileName|g" > tmp
+    mv tmp "$previewFileName"
+
+    # Add word count metadata
+    metadata="Word count: "$(wc -w "$postSource" | cut -d' ' -f1)
+    # Insert the metadata into the HTML file placeholder
+    cat "$previewFileName" | sed "s/--metadata--/$metadata/i" > tmp
     mv tmp "$previewFileName"
 
     # Extract the date from the file name    
