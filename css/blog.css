@@ -24,7 +24,7 @@
 }
 
 .preview {
-	max-height: 12em;
+	max-height: 30em;
 	position: relative;
 	overflow: hidden;
 }
