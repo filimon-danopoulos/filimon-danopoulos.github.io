@@ -23,38 +23,3 @@
   color: #999;
 }
 
-.preview {
-	max-height: 30em;
-	position: relative;
-	overflow: hidden;
-}
-.preview .preview-continue { 
-	position: absolute; 
-	bottom: 0; 
-	left: 0;
-	width: 100%; 
-	text-align: center; 
-	margin: 0; 
-	padding: 1em 0; 
-	
-    background: -webkit-linear-gradient(
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 1) 100%
-    ); 
-    background-image: -moz-linear-gradient(
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 1) 100%
-    );
-    background-image: -o-linear-gradient(
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 1) 100%
-    );
-    background-image: linear-gradient(
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 1) 100%
-    );
-    background-image: -ms-linear-gradient(
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 1) 100%
-    );
-}

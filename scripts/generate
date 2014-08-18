@@ -46,7 +46,7 @@ generatePostPreview() {
     previewFileName=$(echo $postSource | sed -e 's/post_src/previews/' -e 's/\.md/\.html/')
     
     # Generate the post content and save it in a temporary file
-    head -n 15  "$postSource" | markdown > "$previewFileName"
+    head "$postSource" | markdown > "$previewFileName"
     
     postPattern="--content--"
     # Apply the template to the content
