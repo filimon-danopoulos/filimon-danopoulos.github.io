@@ -27,14 +27,14 @@
 	max-height: 30em;
 	position: relative;
 	overflow: hidden;
+	margin-bottom: 3em;
 }
 .preview .preview-continue { 
 	position: absolute; 
 	bottom: 0; 
 	left: 0;
 	width: 100%; 
-	text-align: center; 
-	margin-top: 1em; 
+	text-align: center;  
 	
     background: -webkit-linear-gradient(
         rgba(255, 255, 255, 0) 0%,
