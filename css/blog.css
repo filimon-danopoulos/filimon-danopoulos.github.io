@@ -24,7 +24,7 @@
 }
 
 .preview {
-	max-height: 9em;
+	max-height: 12em;
 	position: relative;
 	overflow: hidden;
 }
@@ -37,10 +37,24 @@
 	margin: 0; 
 	padding: 1em 0; 
 	
-	/* "transparent" only works here because == rgba(0,0,0,0) */ 
-	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, transparent),color-stop(1, white));
-    background-image: -webkit-linear-gradient(top, transparent, white);
-    background-image: -moz-linear-gradient(top, transparent, white);
-    background-image: -ms-linear-gradient(top, transparent, white);
-    background-image: -o-linear-gradient(top, transparent, white);
+    background: -webkit-linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    ); 
+    background-image: -moz-linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    background-image: -o-linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    background-image: -ms-linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
 }
