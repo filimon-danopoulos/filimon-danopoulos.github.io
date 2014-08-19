@@ -3,20 +3,24 @@
  */
 
 @media (min-width: 1200px) {
-  .container {
-    width: 970px;
-  }
+    .container {
+        width: 970px;
+    }
 }
 
 .blog-description {
-  color: #999;
+    color: #999;
 }
 
 .post-date {
-  font-size: 0.9em;
-  color: #999;
+    font-size: 0.9em;
+    color: #999;
 }
 
 footer {
-  color: #999;
+    position: fixed;
+    bottom:0;
+    left:0;   
+    color: #999;
+    margin-bottom: 1em;
 }
