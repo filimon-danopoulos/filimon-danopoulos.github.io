@@ -8,16 +8,10 @@
     }
 }
 
-.blog-description {
-    color: #999;
-}
-
 .post-date {
     font-size: 0.9em;
-    color: #999;
 }
 
-.blog-contents {
-    margin
+footer {
+    margin-bottom: 1em;
 }
-
