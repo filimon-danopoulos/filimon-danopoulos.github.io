@@ -93,7 +93,6 @@ rm -rf posts/* previews/*
 
 # Clear the index.html file and load the head of the file
 cat "templates/page_head.html" > index.html 
-cat "templates/home_breadcrumb.html" >> index.html
 
 # Loop over each markdown file in the post_src directory.
 # A post is assumed to start with a date e.g. 2014-08-16
