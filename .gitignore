@@ -36,6 +36,8 @@
 ehthumbs.db
 Thumbs.db
 
-# GEdit generated files #
+# GEdit and generated files #
 #########################
 *~
+*.swp
+*.swo
