@@ -1,4 +1,4 @@
-This post is a run down of how I ended up hosting my blog here and how I picked the technology.
+This post is a run down of how I ended up hosting my blog here and how I decided about what technology to use.
 
 ## The search
 
