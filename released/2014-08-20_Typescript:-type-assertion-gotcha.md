@@ -47,7 +47,7 @@ The thing is, when you have a syntax that is so similar to something you already
 
 If you spend some time looking at Typescript and the compiled JavaScript you quickly see that they are very similar, in a lot of cases the only difference is type anotations in the Typescript code. This seems to be very much by design, see [this post about let and const](https://typescript.codeplex.com/discussions/397633) for another example on the same note.
 
-## Keep in mind,
+## Keep in mind
 
 Remember that Typescript is not type safe, it's just safer than JavaScript. In the end Typescript compiles to clean regular JavaScript and will behave exactly like clean regular JavaScript: dynamic as shit!
 
