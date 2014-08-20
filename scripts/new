@@ -13,7 +13,7 @@ fi
 postTitle=$1
 
 # Create file
-postPath="post_src/"$(date -I)"_"$(echo "$postTitle" | tr ' ' '-')
+postPath="new/"$(date -I)"_"$(echo "$postTitle" | tr ' ' '-')".md"
 touch "$postPath"
 
 # Open it in vim

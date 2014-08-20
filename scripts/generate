@@ -11,7 +11,7 @@ generatePost() {
     postSource=$1
     
     # Generate the post name from the source markdown file
-    htmlPostFileName=$(echo $postSource | sed -e 's/_src\//s\//' -e 's/\.md/\.html/')
+    htmlPostFileName=$(echo $postSource | sed -e 's/released\//posts\//' -e 's/\.md/\.html/')
     
     # Generate the post content and save it in the destination HTML file
     markdown "$postSource" > "$htmlPostFileName"
@@ -49,7 +49,7 @@ generatePost() {
 generatePostPreview() {
     postSource=$1
     
-    previewFileName=$(echo $postSource | sed -e 's/post_src/previews/' -e 's/\.md/\.html/')
+    previewFileName=$(echo $postSource | sed -e 's/released\//previews\//' -e 's/\.md/\.html/')
     
     # Generate the post content and save it in a temporary file
     head "$postSource" | markdown > "$previewFileName"
@@ -67,7 +67,7 @@ generatePostPreview() {
     
     
     # Generate the post name from the source markdown file
-    htmlPostFileName=$(echo $postSource | sed -e 's/_src\//s\//' -e 's/\.md/\.html/')
+    htmlPostFileName=$(echo $postSource | sed -e 's/released\//posts\//' -e 's/\.md/\.html/')
     
     # Add href to link in header and in continuew button
     cat "$previewFileName" | sed "s|--href--|/$htmlPostFileName|g" > tmp
@@ -96,7 +96,7 @@ cat "templates/page_head.html" > index.html
 
 # Loop over each markdown file in the post_src directory.
 # A post is assumed to start with a date e.g. 2014-08-16
-for postSource in $(find "post_src/" -name "*.md")
+for postSource in $(find "released/" -name "*.md")
 do
     # Create a preview of the post
     previewFileName=$(generatePostPreview "$postSource")
