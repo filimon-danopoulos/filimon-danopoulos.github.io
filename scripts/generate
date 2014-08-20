@@ -96,7 +96,7 @@ cat "templates/page_head.html" > index.html
 
 # Loop over each markdown file in the post_src directory.
 # A post is assumed to start with a date e.g. 2014-08-16
-for postSource in $(find "released/" -name "*.md")
+for postSource in $(find "released/" -name "*.md" | sort -n -r)
 do
     # Create a preview of the post
     previewFileName=$(generatePostPreview "$postSource")
