@@ -17,7 +17,7 @@ Another nice thing that Typescript provides is EcmaScript 6 style classes and in
 
 ## It's only typed at compile time!
 
-I recently started working with Typescript and I ran in to something that took me by surprise. To illustrate it mistake let's look at a simplified example:
+I recently started working with Typescript and I ran in to something that took me by surprise. To illustrate this mistake let's look at a simplified example:
 
     class A { }
     class B extends A { }
@@ -45,7 +45,7 @@ The examples are very similar and both of the above samples compile. When you ru
 
 The thing is, when you have a syntax that is so similar to something you already know (C# in my case) your expecations are set accordingly. The Typescript documentation is clear that no run time checks are made (it's not even called a cast in Typescript), but during coding I fell back on subconsious patterns.
 
-If you spend some time looking at Typescript and the compiled JavaScript you quickly see that they are very similar, in a lot of cases the only difference is type anotations in the Typescript code. This seems to be very much by design, see [this post about let and const](https://typescript.codeplex.com/discussions/397633) for another example on the same note.
+If you spend some time looking at Typescript and the compiled JavaScript you quickly see that they are very similar, in a lot of cases the only differences are the type anotations in the Typescript code. This seems to be very much by design, see [this post about let and const](https://typescript.codeplex.com/discussions/397633) for another example on the same note.
 
 ## Keep in mind
 
