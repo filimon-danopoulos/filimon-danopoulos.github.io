@@ -1,6 +1,4 @@
-This post is a run down of how I ended up hosting my blog here and how I decided about what technology to use.
-
-## The search
+# In search of a blog host
 
 When I decided that I wanted to create a blog I started looking at different solutions for hosting it. My requirements were:
 
