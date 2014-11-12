@@ -16,7 +16,7 @@ This is a very simple exploit and took about ten minutes. The write up took sign
 ### Scanning the network
 
 So after I have fired up my VMs I open the attacking machine and start a terminal. The first thing I want to do is find out where my target is so I 
-turn to `nmap` and run (result redacted):
+turn to `nmap` and run (result edited):
 
     # nmap  192.168.56.0/24
 
@@ -82,7 +82,7 @@ Metasploit is our friend here so I launch it with `#msfconsole` and do the follo
        exploit/unix/ftp/vsftpd_234_backdoor  2011-07-03       excellent  VSFTPD v2.3.4 Backdoor Command Execution
 
 Jackpot! We found a vulnerability with an excellent rating that affects the exact version our target is running. 
-Let's find out more, again the output is redacted.
+Let's find out more, again the output is edited for brevity.
 
     msf> info exploit/unix/ftp/vsftpd_234_backdoor 
     
