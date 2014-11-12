@@ -7,7 +7,7 @@ Now I stated experimenting with Kali again and figured I might as well document 
 
 I have set up a Kali VM - the atacker - and a Metasploitable VM - the target - in VirtualBox, that I will be using in this post. 
 Kali is a Linux distro designed for hacking/pentesting and is loaded with tools. Metasploitable is an Ubuntu VM loaded with poorly 
-configured applications that are easily hackable. I will post instructions in a future post, but most of it is dead simple and easily found online already. 
+configured applications that are easily hackable. I will post installation instructions in a future post, but most of it is dead simple and easily found online already. 
 
 ## The hack
 
