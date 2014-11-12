@@ -15,3 +15,7 @@
 footer {
     margin-bottom: 1em;
 }
+
+code {
+    white-space: nowrap;
+}
