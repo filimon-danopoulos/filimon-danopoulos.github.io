@@ -17,5 +17,6 @@ footer {
 }
 
 code {
-    white-space: nowrap;
+    display: block; 
+    width: 892px;
 }
