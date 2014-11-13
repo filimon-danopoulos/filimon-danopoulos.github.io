@@ -16,7 +16,7 @@ footer {
     margin-bottom: 1em;
 }
 
-code {
+pre > code {
     display: block; 
     width: 892px;
 }
