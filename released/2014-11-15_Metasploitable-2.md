@@ -243,12 +243,12 @@ With this is mind I turn to my number one tool for brute forcing: `hydra `. Time
 Success, at this point I just cancel the scan, I have proven my point and gotten a couple of user name password combos.
 Now let me exlain the `hydra` call. There are quite a lot of options to explain so the break it up.
 
-    * `-L` defines the user name list.
-    * `-P` denotes a password set. I use the password list from JohnTheRipper here.
-    * `-e` gives any addititonal options, in this case; `n`, for `null` password; `s` for using user name as password; `r`, for using the username in reverse.
-    * `-t` dictates how many "tasks" should be run, defaults to 16 but has to be throtled to 8 otherwise it produces errors.
-    * `-u` tells hydra to apply each password to all users. This will find misconfigured (user name == password) users quicly
-    * Lastly we specify the actual target, in this case the protocol is defined as part of the URI.
+* `-L` defines the user name list.
+* `-P` denotes a password set. I use the password list from JohnTheRipper here.
+* `-e` gives any addititonal options, in this case; `n`, for `null` password; `s` for using user name as password; `r`, for using the username in reverse.
+* `-t` dictates how many "tasks" should be run, defaults to 16 but has to be throtled to 8 otherwise it produces errors.
+* `-u` tells hydra to apply each password to all users. This will find misconfigured (user name == password) users quicly
+* Lastly we specify the actual target, in this case the protocol is defined as part of the URI.
     
 Next we try to login to the machine via SSH:
 
