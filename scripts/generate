@@ -9,10 +9,12 @@
 
 generatePost() {
     postSource=$1
-    htmlPostFileName=$2
     
+    # Generate the post name from the source markdown file
+    htmlPostFileName=$(echo $postSource | sed -e 's/released\//posts\//' -e 's/\.md/\.html/')
+   
     # Generate the post content and save it in the destination HTML file
-    markdown "$postSource" >> "$htmlPostFileName"
+    markdown "$postSource" > "$htmlPostFileName"
     
     postPattern="--content--"
     # Apply the template to the content
@@ -40,6 +42,16 @@ generatePost() {
     # Insert the date into the HTML file placeholder
     cat "$htmlPostFileName" | sed "s/--date--/$postDate/i" > tmp
     mv tmp "$htmlPostFileName"
+    
+    # Generate the nav bar
+    generateNavBar "post" "navbar"
+    # Prepend navbar
+    cat navbar "$htmlPostFileName" > tmp
+    # Remove the left over file
+    rm navbar
+    mv tmp "$htmlPostFileName"
+    
+    echo "$htmlPostFileName"
 }
 
 generatePostPreview() {
@@ -132,15 +144,8 @@ do
     # Append newly created preview to index.html document
     cat "$previewFileName" >> index.html
     
-    
-    # Generate the post name from the source markdown file
-    htmlPostFileName=$(echo $postSource | sed -e 's/released\//posts\//' -e 's/\.md/\.html/')
-    # Create the file
-    touch "$htmlPostFileName"
-    # Generate the nav bar
-    generateNavBar "post" "$htmlPostFileName"
-    #Generate the post
-    generatePost "$postSource" "$htmlPostFileName"
+    #Generate the entire post
+    htmlPostFileName=$(generatePost "$postSource")
     
     # Make the HTML file containing the post a real HTML document
     cat "templates/page_head.html" \
