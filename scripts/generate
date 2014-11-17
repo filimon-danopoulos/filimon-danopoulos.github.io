@@ -69,7 +69,7 @@ generatePostPreview() {
     # Generate the post name from the source markdown file
     htmlPostFileName=$(echo $postSource | sed -e 's/released\//posts\//' -e 's/\.md/\.html/')
     
-    # Add href to link in header and in continuew button
+    # Add href to link in header and in continue button
     cat "$previewFileName" | sed "s|--href--|/$htmlPostFileName|g" > tmp
     mv tmp "$previewFileName"
 
@@ -88,17 +88,29 @@ generatePostPreview() {
     echo "$previewFileName"
 }
 
+
+generateNavBar() {
+    postSource=$1
+    # Generate the post name from the source markdown file
+    htmlPostFileName=$(echo $postSource | sed -e 's/released\//posts\//' -e 's/\.md/\.html/')
+    cat "templates/navbar_default.html" | sed "s|--posthref--|/$htmlPostFileName|g" >> index.html
+}
+
 # Remove all previously compiled posts and previews
 rm -rf posts/* previews/*
 
 # Clear the index.html file and load the head of the file
 cat "templates/page_head.html" > index.html 
-cat "templates/navbar_default.html" >> index.html
 
 # Loop over each markdown file in the post_src directory.
 # A post is assumed to start with a date e.g. 2014-08-16
+$first=true
 for postSource in $(find "released/" -name "*.md" | sort -n -r)
 do
+    if [[ $first ]]; then
+        $first=false
+        generateNavBar("$postSource")
+    fi
     # Create a preview of the post
     previewFileName=$(generatePostPreview "$postSource")
     
