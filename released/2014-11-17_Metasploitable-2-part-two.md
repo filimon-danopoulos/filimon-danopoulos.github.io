@@ -6,7 +6,7 @@ the enumeration again with the known users as the user name list.
 
 ## Another go
 
-I managed to get a list of al the users during [this](https://filimon-danopoulos.github.io/posts/2014-11-15_Metasploitable-2.html) exercise by exploiting
+I managed to get a list of al the users during [this](https://filimon-danopoulos.github.io/posts/2014-11-15_Metasploitable-2-part-one.html) exercise by exploiting
 a null session vulnerability in Samba. I saved it to the file `users.lst` so let's launch the exploit with that file.
 
     msf > use auxiliary/scanner/ssh/ssh_enumusers 
