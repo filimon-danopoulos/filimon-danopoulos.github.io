@@ -13,8 +13,14 @@ generatePost() {
     # Generate the post name from the source markdown file
     htmlPostFileName=$(echo $postSource | sed -e 's/released\//posts\//' -e 's/\.md/\.html/')
     
+    # Create the file
+    touch "$htmlPostFileName"
+    
+    # Generate the nav bar
+    generateNavBar "post" "$htmlPostFileName"
+    
     # Generate the post content and save it in the destination HTML file
-    markdown "$postSource" > "$htmlPostFileName"
+    markdown "$postSource" >> "$htmlPostFileName"
     
     postPattern="--content--"
     # Apply the template to the content
@@ -90,7 +96,33 @@ generatePostPreview() {
 
 
 generateNavBar() {
-    cat "templates/navbar_default.html" >> index.html
+    # Target of the generate
+    target=$1
+    # Declare target file variable
+    targetFile=""    
+    if [[ "$target" = "about" ]]; then
+        # Write to the about index file
+        targetFile="about/index.html"
+        # Set the about pill as active
+        cat "templates/navbar_default.html" | sed "s/--homeactive--//g" | sed "s/--aboutactive--/active/g" > tmp        
+    elif [[ "$target" = "home" ]]; then    
+        # Write to the main index file
+        targetFile="index.html"
+        # Set home pill as active
+        cat "templates/navbar_default.html" | sed "s/--homeactive--/active/g" | sed "s/--aboutactive--//g" > tmp        
+    elif [[ "$target" = "post" ]]; then    
+        # Read the target file from input
+        targetFile=$2
+        # Set all pills as inactive
+        cat "templates/navbar_default.html" | sed "s/--homeactive--//g" | sed "s/--aboutactive--//g" > tmp        
+    else   
+        echo "Unknown argument $target"
+        exit 1
+    fi
+    # Add navigation to target file
+    cat tmp >> "$targetFile"    
+    # Remove temp file
+    rm tmp
 }
 
 # Remove all previously compiled posts and previews
@@ -98,7 +130,7 @@ rm -rf posts/* previews/*
 
 # Clear the index.html file and load the head of the file
 cat "templates/page_head.html" > index.html 
-generateNavBar
+generateNavBar "home"
 
 # Loop over each markdown file in the post_src directory.
 # A post is assumed to start with a date e.g. 2014-08-16
@@ -124,3 +156,8 @@ done
 # Append the tail of the document so that we have comple the HTML
 cat "templates/page_tail.html" >> index.html
 
+# Generate about page
+cat "templates/page_head.html" > "about/index.html"
+generateNavBar "about"
+markdown "about/index.md" >> "about/index.html"
+cat "templates/page_tail.html" >> "about/index.html"

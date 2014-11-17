@@ -18,10 +18,6 @@
             </p>
         </header>   
         <section class="container">
-<ul class="nav nav-pills">
-    <li role="presentation"><a href="/">Home</a></li>
-</ul>
-<hr>
 <div class="panel panel-primary text-left">
     <div class="panel-heading">
         <h1 class="panel-title">
@@ -32,6 +28,11 @@
     </div>
     <div class="panel-body">    
         <div class="post-content">
+<ul class="nav nav-pills">
+    <li role="presentation" class=""><a href="/">Home</a></li>
+    <li role="presentation" class=""><a href="/about">About</a></li>
+</ul>     
+<hr>
 <h1>Designing a site generator</h1>
 
 <p><strong>Disclaimer</strong>: <em>I have taken some artistic liberties in the timeline of some events since it didn't make for good writing otherwise. Check the commit log of the project <a href="https://github.com/filimon-danopoulos/filimon-danopoulos.github.io/commits/master">here</a> for a factual rendition.</em></p>
@@ -109,7 +110,7 @@ mv tmp "$htmlPostFileName"
 </div>
         </section>
         <footer class="text-center text-muted">
-            &copy; Filimon Danopoulos
+            <a href="https://github.com/filimon-danopoulos/">&copy; Filimon Danopoulos</a>
         </footer>
     </body>
 </html>
