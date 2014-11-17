@@ -8,9 +8,9 @@ This means I might very well find sub-optimal solutions for some problems, deal 
 ## The target
 
 I will target the same Metasploitable VM under the exact same circumstances as last time.
-Running on port 22 it has (from the previous `nmap` scan tar I saved to the file `target`):
+Running on port 22 it has (from the previous `nmap` scan that I saved to the file `target`):
 
-22/tcp open  ssh     OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)
+    22/tcp open  ssh     OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)
 
 ## Hack away!
 
@@ -224,7 +224,6 @@ With this is mind I turn to my number one tool for brute forcing: `hydra `. Time
     Hydra v7.6 (c)2013 by van Hauser/THC & David Maciejak - for legal purposes only
 
     Hydra (http://www.thc.org/thc-hydra) starting at 2014-11-15 04:10:13
-    [WARNING] Restorefile (./hydra.restore) from a previous session found, to prevent overwriting, you have 10 seconds to abort...
     [DATA] 8 tasks, 1 server, 121040 login tries (l:34/p:3560), ~15130 tries per task
     [DATA] attacking service ssh on port 22
     [22][ssh] host: 192.168.56.103   login: user   password: user

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Programming and stuff...</title>
+
+        
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/css/blog.css">
+    </head>
+    <body>
+        <header class="text-center jumbotron">
+            <h1 class="blog-title">Programming and stuff...</h1>
+            <p class="blog-description text-muted">
+                A simple blog where I write about programming - mostly JavaScript and C# - the web and whatever else I  might think of.
+            </p>
+        </header>   
+        <section class="container">             
+<div class="panel panel-primary text-left">
+    <div class="panel-heading">
+        <h1 class="panel-title">
+            <a href="/posts/2014-11-17_Metasploitable-2.1.html">
+                Metasploitable 2
+            </a>
+        </h1>
+    </div>
+    <div class="panel-body">    
+        <div class="post-content">
+<h1>SSH follow up</h1>
+
+<p>Since I did my last post I have been meaning to write a follow up on the failed attempt at using: <code>auxiliary/scanner/ssh/ssh_enumusers</code>.
+I wanted to figure out what went wrong and if the vulnerability was even applicable. Since I have a list of all the users now I can try 
+the enumeration again with the known users as the user name list.</p>
+
+<h2>Another go</h2>
+
+<p>I managed to get a list of al the users during <a href="https://filimon-danopoulos.github.io/posts/2014-11-15_Metasploitable-2.html">this</a> exercise by exploiting
+a null session vulnerability in Samba. I saved it to the file <code>users.lst</code> so let's launch the exploit with that file.</p>
+
+<pre><code>msf &gt; use auxiliary/scanner/ssh/ssh_enumusers 
+msf auxiliary(ssh_enumusers) &gt; show option
+[-] Invalid parameter "option", use "show -h" for more information
+msf auxiliary(ssh_enumusers) &gt; show options
+
+Module options (auxiliary/scanner/ssh/ssh_enumusers):
+
+   Name       Current Setting  Required  Description
+   ----       ---------------  --------  -----------
+   Proxies                     no        Use a proxy chain
+   RHOSTS                      yes       The target address range or CIDR identifier
+   RPORT      22               yes       The target port
+   THREADS    1                yes       The number of concurrent threads
+   THRESHOLD  10               yes       Amount of seconds needed before a user is considered found
+   USER_FILE                   yes       File containing usernames, one per line
+
+msf auxiliary(ssh_enumusers) &gt; set USER_FILE users.lst 
+USER_FILE =&gt; users.lst
+msf auxiliary(ssh_enumusers) &gt; set RHOSTS 192.168.56.103
+RHOSTS =&gt; 192.168.56.103
+msf auxiliary(ssh_enumusers) &gt; run
+
+[*] 192.168.56.103:22 - SSH - Checking for false positives
+[*] 192.168.56.103:22 - SSH - Starting scan
+[!] 192.168.56.103:22 - SSH - User 'nobody' not found
+[!] 192.168.56.103:22 - SSH - User 'bind' not found
+[!] 192.168.56.103:22 - SSH - User 'proxy' not found
+[!] 192.168.56.103:22 - SSH - User 'syslog' not found
+[!] 192.168.56.103:22 - SSH - User 'user' not found
+[!] 192.168.56.103:22 - SSH - User 'www-data' not found
+[!] 192.168.56.103:22 - SSH - User 'root' not found
+[!] 192.168.56.103:22 - SSH - User 'news' not found
+[!] 192.168.56.103:22 - SSH - User 'postgres' not found
+[!] 192.168.56.103:22 - SSH - User 'bin' not found
+[!] 192.168.56.103:22 - SSH - User 'mail' not found
+[!] 192.168.56.103:22 - SSH - User 'distccd' not found
+[!] 192.168.56.103:22 - SSH - User 'proftpd' not found
+[!] 192.168.56.103:22 - SSH - User 'dhcp' not found
+[!] 192.168.56.103:22 - SSH - User 'daemon' not found
+[!] 192.168.56.103:22 - SSH - User 'sshd' not found
+[!] 192.168.56.103:22 - SSH - User 'man' not found
+[!] 192.168.56.103:22 - SSH - User 'lp' not found
+[!] 192.168.56.103:22 - SSH - User 'mysql' not found
+[!] 192.168.56.103:22 - SSH - User 'gnats' not found
+[!] 192.168.56.103:22 - SSH - User 'libuuid' not found
+[!] 192.168.56.103:22 - SSH - User 'backup' not found
+[!] 192.168.56.103:22 - SSH - User 'msfadmin' not found
+[!] 192.168.56.103:22 - SSH - User 'telnetd' not found
+[!] 192.168.56.103:22 - SSH - User 'sys' not found
+[!] 192.168.56.103:22 - SSH - User 'klog' not found
+[!] 192.168.56.103:22 - SSH - User 'postfix' not found
+[!] 192.168.56.103:22 - SSH - User 'service' not found
+[!] 192.168.56.103:22 - SSH - User 'list' not found
+[!] 192.168.56.103:22 - SSH - User 'irc' not found
+[!] 192.168.56.103:22 - SSH - User 'ftp' not found
+[!] 192.168.56.103:22 - SSH - User 'tomcat55' not found
+[!] 192.168.56.103:22 - SSH - User 'sync' not found
+[!] 192.168.56.103:22 - SSH - User 'uucp' not found
+[*] Scanned 1 of 1 hosts (100% complete)
+[*] Auxiliary module execution completed
+</code></pre>
+
+<p>Not a single user found, but we know that all users exist! That means that this version of SSH is not actually vulnerable to this attack.
+I have done some searching about this version online and it seems like it suffers from another vulnerability name <a href="http://www.exploit-db.com/exploits/5720/">this</a> one on
+http://www.exploit-db.com/. Who knows I might come around doing that if I get bored enough...</p>
+        </div>
+        <div class="text-center">
+            <a class="btn btn-info" href="/"> Back to main page...</a>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div class="container-fluid">
+            <div class="row text-muted">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                    Word count: 610
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6  text-right">
+                    2014-11-17
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+        </section>
+        <footer class="text-center text-muted">
+            &copy; Filimon Danopoulos
+        </footer>
+    </body>
+</html>
