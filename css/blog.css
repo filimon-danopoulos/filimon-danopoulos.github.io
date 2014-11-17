@@ -21,7 +21,10 @@ pre > code {
     width: 892px;
 }
 
+.jumbotron {
+    margin-bottom: -1.5em;
+}
+
 ul.nav {
-    margin-top: -1.5em;
     margin-bottom: -0.6em;
 }
