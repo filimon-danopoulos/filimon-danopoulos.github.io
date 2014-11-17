@@ -32,7 +32,7 @@ generatePost() {
     mv tmp "$htmlPostFileName"
 
     # Add word count metadata
-    metadata="Word count: "$(wc -w "$postSource" | cut -d' ' -f1)
+    metadata="Words: "$(wc -w "$postSource" | cut -d' ' -f1)
     # Insert the metadata into the HTML file placeholder
     cat "$htmlPostFileName" | sed "s/--metadata--/$metadata/i" > tmp
     mv tmp "$htmlPostFileName"
