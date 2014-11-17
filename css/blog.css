@@ -29,5 +29,6 @@ pre > code {
 }
 
 ul.nav {
+    margin-top: 0.5em;
     margin-bottom: -0.8em;
 }
