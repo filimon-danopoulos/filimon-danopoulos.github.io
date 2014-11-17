@@ -71,7 +71,7 @@ a null session vulnerability in Samba. I saved it to the file `users.lst` so let
     [*] Auxiliary module execution completed
     
 Not a single user found, but we know that all users exist! That means that this version of SSH is not actually vulnerable to this attack.
-I have done some searching about this version online and it seems like it suffers from another vulnerability name [this](http://www.exploit-db.com/exploits/5720/) one on
+I have done some searching about this version online and it seems like it suffers from another vulnerability namely [this](http://www.exploit-db.com/exploits/5720/) one on
 http://www.exploit-db.com/. Who knows I might come around doing that if I get bored enough...
 
 
