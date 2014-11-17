@@ -6,6 +6,10 @@
     .container {
         width: 970px;
     }
+    ul.nav {
+        margin-top: -1.5em;
+        margin-bottom: -0.6em;
+    }
 }
 
 .post-date {
