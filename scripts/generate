@@ -169,7 +169,6 @@ cat "templates/page_tail.html" >> "$aboutFile"
 # Generate archive page
 archiveFile="archive/index.html"
 cat "templates/page_head.html" > "$archiveFile"
-generateNavBar "post"
 cat "templates/archive.html" >> "$archiveFile"
 cat "templates/page_tail.html" >> "$archiveFile"
 
