@@ -38,14 +38,11 @@ ul.nav {
     .archive-input {
         width: 33% !important;
     }
-    .archive-input > input {
-        width: 100% !important;
-    }
 }
 
 @media (min-width: 768px) {
     .archive-input {
-        width: 33% !important;
+        width: 32% !important;
     }
     .archive-input > input {
         width: 100% !important;
