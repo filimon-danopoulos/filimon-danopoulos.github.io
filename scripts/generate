@@ -24,7 +24,7 @@ generatePost() {
     # Insert post label from file name
     # First remove the date part, then remove the file extension, lastly replace hyphens with spaces
     postHeader=$(echo "$htmlPostFileName" | cut -d'_' -f2 | cut -d'.' -f1 | tr '-' ' ')
-    cat "$htmlPostFileName" | sed "s/--header--/$postHeader/i" > tmp
+    cat "$htmlPostFileName" | sed "s/--postheader--/$postHeader/i" > tmp
     mv tmp "$htmlPostFileName"
     
     # Add href to link in header

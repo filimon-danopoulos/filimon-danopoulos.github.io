@@ -1,0 +1,25 @@
+#!/usr/bin/bash
+
+# This scripts helps with releasing a new post
+
+# Verify that all parameters are provided
+if [[ "$#" != "1" ]]; then
+    echo "You have to supply a file to release!"
+    exit 1
+fi
+
+# Map input to named variables
+originalPath=$1
+
+if [[ $originalPath != new/* ]]; then
+    echo "Path of existing post should be relative to project root"
+    exit 1
+fi
+
+postTitle=$(echo $originalPath | cut -d/ -f2 | cut -d_ -f2);
+
+# Create file
+releasedPath="released/"$(date -I)"_"$postTitle
+
+mv "$originalPath" "$releasedPath"
+
