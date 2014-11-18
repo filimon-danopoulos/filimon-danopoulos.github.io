@@ -33,4 +33,4 @@ Essential to the generation process are the HTML-templates. They are located in 
 
 ## Writing 
 
-In order to write a new post navigate to the root folder of the project and run `./scripts/new "$postName" ` where `$postName` is what you want to call the post. It will automagically open in Vim. When you are done writing move, the post to the folder `released`. This folder includes all the posts that will be used during the site generation. You might wan't to updated the timestamp to reflect the date you moved it to the release folder.
+In order to write a new post navigate to the root folder of the project and run `./scripts/new "$postName" ` where `$postName` is what you want to call the post. It will automagically open in Vim. When you are done writing, move the post to the folder `released`. This folder includes all the posts that will be used during the site generation. You might want to updated the timestamp to reflect the date you moved it to the release folder.
