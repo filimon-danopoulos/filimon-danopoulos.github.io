@@ -163,3 +163,12 @@ cat "templates/page_head.html" > "about/index.html"
 generateNavBar "about"
 markdown "about/index.md" >> "about/index.html"
 cat "templates/page_tail.html" >> "about/index.html"
+
+
+# Generate archive page
+# Generate about page
+cat "templates/page_head.html" > "archive/index.html"
+cat "templates/archive" >> "archive/index.html"
+cat "templates/page_tail.html" >> "archive/index.html"
+
+
