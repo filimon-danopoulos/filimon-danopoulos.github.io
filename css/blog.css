@@ -31,5 +31,9 @@ ul.nav {
     ul.nav {
         margin-top: -1.5em;
     }
+    .archive-input {
+        width: 33%;
+    }
 }
+
 
