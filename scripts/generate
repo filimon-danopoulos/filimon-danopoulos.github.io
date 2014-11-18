@@ -159,16 +159,18 @@ done
 cat "templates/page_tail.html" >> index.html
 
 # Generate about page
-cat "templates/page_head.html" > "about/index.html"
+aboutFile="about/index.html"
+cat "templates/page_head.html" > "$aboutFile"
 generateNavBar "about"
-markdown "about/index.md" >> "about/index.html"
-cat "templates/page_tail.html" >> "about/index.html"
+markdown "about/index.md" >> "$aboutFile"
+cat "templates/page_tail.html" >> "$aboutFile"
 
 
 # Generate archive page
-cat "templates/page_head.html" > "archive/index.html"
-generateNavBar "about"
-cat "templates/archive.html" >> "archive/index.html"
-cat "templates/page_tail.html" >> "archive/index.html"
+archiveFile="archive/index.html"
+cat "templates/page_head.html" > "$archiveFile"
+generateNavBar "post"
+cat "templates/archive.html" >> "$archiveFile"
+cat "templates/page_tail.html" >> "$archiveFile"
 
 
