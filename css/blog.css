@@ -17,6 +17,10 @@ ul.nav {
     margin-bottom: -0.8em;
 }
 
+.archive-input-form-label {
+    display: inline-block;
+}
+
 /*
  * Override Bootstrap's default container.
  */
