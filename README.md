@@ -6,7 +6,7 @@ roughly document the components of the blog.
  
 ## Setting up
 
-This blog has a acouple requirements in order to be set up correctly. 
+This blog has a couple requirements in order to function correctly. 
 First and fore most you have to install the markdown compiler by: 
 
     $ sudo pacman -S markdown
