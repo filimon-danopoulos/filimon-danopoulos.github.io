@@ -34,6 +34,9 @@ ul.nav {
     .archive-input {
         width: 33% !important;
     }
+    .archive-input > input {
+        width: 100% !important;
+    }
 }
 
 
