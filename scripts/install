@@ -1,6 +1,0 @@
-#!/usr/bin/bash
-
-# A dead simple script to make sure I can get everything up and running quickly if I have to reinstall the machine.
-# Keeps tracks dependencies.
-
-pacman -S markdown
