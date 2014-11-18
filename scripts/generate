@@ -166,8 +166,8 @@ cat "templates/page_tail.html" >> "about/index.html"
 
 
 # Generate archive page
-# Generate about page
 cat "templates/page_head.html" > "archive/index.html"
+generateNavBar "about"
 cat "templates/archive.html" >> "archive/index.html"
 cat "templates/page_tail.html" >> "archive/index.html"
 
