@@ -42,7 +42,7 @@
             topics = text.replace(/ /g, '').split(',');
             this.index.archive.entries
                 .filter(function(entry) {
-                    return entry.topics.some(function(topic) {
+                    return entry.topics.every(function(topic) {
                         return topics.indexOf(topic) !== -1;
                     });
                 }).map(function(entry) {
