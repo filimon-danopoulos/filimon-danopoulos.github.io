@@ -53,9 +53,10 @@
         };
         
         getArchiveData = function() {
+            var self = this;
             $.get("/archive/index.json")
             .done(function(data) {
-                this.index = data;
+                self.index = data;
             })
             .fail(function() {
                 alert("Could not load archive data!");
