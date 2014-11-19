@@ -28,7 +28,6 @@
         var getArchiveData, initSearchFormHandlers, helpers, filterByTopic;
         
         function Handler() {
-            this.index = {};
             helpers = new Helpers(this);
         };
         
@@ -40,27 +39,17 @@
         Handler.prototype.filterByTopic = function(text) {
             var topics;
             topics = text.replace(/ /g, '').split(',');
-            this.index.archive.entries
-                .filter(function(entry) {
-                    return entry.topics.every(function(topic) {
-                        return topics.indexOf(topic) === -1;
-                    });
-                }).map(function(entry) {
-                    return entry.id;
-                }).forEach(function(id) {
-                    $('#'+id).hide();
+            $('.archive-entry > archive-entry-topics')
+                .filter(function(element) {
+                    return element.text()
+                        .replace(/ /g, '')
+                        .split(',')
+                        .every(function(topic) {
+                            return topics.indexOf(topic) === -1;
+                        });
+                }).forEach(function(element) {
+                    $(element).parent().hide();
                 });
-        };
-        
-        getArchiveData = function() {
-            var self = this;
-            $.get("/archive/index.json")
-            .done(function(data) {
-                self.index = data;
-            })
-            .fail(function() {
-                alert("Could not load archive data!");
-            });
         };
         
         initSearchFormHandlers = function() {
