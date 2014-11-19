@@ -40,7 +40,7 @@
             topics = text.replace(/ /g, '').split(',');
             $.makeArray($('.archive-entry > .archive-entry-topics'))
                 .filter(function(element) {
-                    return element.text()
+                    return $(element).text()
                         .replace(/ /g, '')
                         .split(',')
                         .every(function(topic) {
