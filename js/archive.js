@@ -13,8 +13,7 @@
         getArchiveData = function() {
             $.get("/archive/index.json")
             .done(function(data) {
-                alert("Loaded data: "+data);
-                this.index = JSON.parse(data);
+                this.index = data;
             })
             .fail(function() {
                 alert("Could not load archive data!");
