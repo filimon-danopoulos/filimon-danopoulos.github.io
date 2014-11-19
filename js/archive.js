@@ -38,15 +38,16 @@
         Handler.prototype.filterByTopic = function(text) {
             var topics;
             topics = text.replace(/ /g, '').split(',');
-            $.makeArray($('.archive-entry > .archive-entry-topics'))
-                .filter(function(element) {
+            $('.archive-entry > .archive-entry-topics')
+                .filter(function() {
+                    var element = $(this);
                     return $(element).text()
                         .replace(/ /g, '')
                         .split(',')
                         .every(function(topic) {
                             return topics.indexOf(topic) === -1;
                         });
-                }).forEach(function(element) {
+                }).each(function(element) {
                     $(element).parent().hide();
                 });
         };
