@@ -39,7 +39,7 @@
         Handler.prototype.filterByTopic = function(text) {
             var topics;
             topics = text.replace(/ /g, '').split(',');
-            $('.archive-entry > archive-entry-topics')
+            $('.archive-entry > .archive-entry-topics')
                 .filter(function(element) {
                     return element.text()
                         .replace(/ /g, '')

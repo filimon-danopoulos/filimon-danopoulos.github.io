@@ -106,17 +106,22 @@ generateNavBar() {
         # Write to the about index file
         targetFile="about/index.html"
         # Set the about pill as active
-        cat "templates/navbar_default.html" | sed "s/--homeactive--//g" | sed "s/--aboutactive--/active/g" > tmp        
+        cat "templates/navbar_default.html" | sed "s/--homeactive--//g" | sed "s/--archiveactive--//g" | sed "s/--aboutactive--/active/g" > tmp        
     elif [[ "$target" = "home" ]]; then    
         # Write to the main index file
         targetFile="index.html"
         # Set home pill as active
-        cat "templates/navbar_default.html" | sed "s/--homeactive--/active/g" | sed "s/--aboutactive--//g" > tmp        
+        cat "templates/navbar_default.html" | sed "s/--homeactive--/active/g" | sed "s/--archiveactive--//g" | sed "s/--aboutactive--//g" > tmp        
     elif [[ "$target" = "post" ]]; then    
         # Read the target file from input
         targetFile=$2
         # Set all pills as inactive
-        cat "templates/navbar_default.html" | sed "s/--homeactive--//g" | sed "s/--aboutactive--//g"> tmp        
+        cat "templates/navbar_default.html" | sed "s/--homeactive--//g" | sed "s/--archiveactive--//g" | sed "s/--aboutactive--//g" > tmp        
+    elif [[ "$target" = "archive" ]]; then    
+        # Write to the archive page
+        targetFile="archive/index.html"
+        # Set archive pill as active
+        cat "templates/navbar_default.html" | sed "s/--homeactive--//g" | sed "s/--archiveactive--/active/g" | sed "s/--aboutactive--//g" > tmp
     else   
         echo "Unknown argument $target"
         exit 1
@@ -166,10 +171,57 @@ markdown "about/index.md" >> "$aboutFile"
 cat "templates/page_tail.html" >> "$aboutFile"
 
 
-# Generate archive page
+
+# Generate the archive page
 archiveFile="archive/index.html"
 cat "templates/page_head.html" > "$archiveFile"
-cat "templates/archive.html" >> "$archiveFile"
+generateNavBar "archive"
+# Create content file
+touch archiveContent
+# Loop over each markdown file in the post_src directory.
+# A post is assumed to start with a date e.g. 2014-08-16
+for postSource in $(find "released/" -name "*.md" | sort -n -r)
+do
+    cp "templates/archive_entry.html" archiveEntry
+
+    # Extract the date from the file name    
+    date=$(echo "$postSource" | grep -o '[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}') 
+    # Insert the date into the HTML file placeholder
+    cat archiveEntry | sed "s/--archive-date--/$date/i" > tmp
+    mv tmp archiveEntry
+    
+    # Extract name from file name
+    title=$(echo "$postSource" | cut -d'_' -f2 | cut -d'.' -f1 | tr '-' ' ')
+    # Insert it into template
+    cat archiveEntry | sed "s/--archive-title--/$title/i" > tmp
+    mv tmp archiveEntry
+    
+    # Create url
+    postUrl=$(echo $postSource | sed -e 's/released\//posts\//' -e 's/\.md/\.html/')
+    # Replace placeholder with url
+    cat archiveEntry |  sed "s|--archive-href--|$postUrl|i" > tmp
+    mv tmp archiveEntry
+    
+    # Add mock topics
+    topics="test"
+    # Replace placeholder with url
+    cat archiveEntry |  sed "s/--archive-topics--/$topics/i" > tmp
+    mv tmp archiveEntry
+    
+    # Generate word count
+    words=$(wc -w "$postSource" | cut -d' ' -f1)
+    # Add to template
+    cat archiveEntry | sed "s/--archive-words--/$words/i" > tmp
+    mv tmp archiveEntry
+    
+    cat archiveEntry >> archiveContent
+    
+done
+
+rm archiveEntry
+
+archivePattern="--archive-content--"
+# Apply the template to the content
+cat "templates/archive.html" | sed "/$archivePattern/ r archiveContent" | sed "/$archivePattern/ d" >> "$archiveFile"
+rm archiveContent
 cat "templates/page_tail.html" >> "$archiveFile"
-
-
