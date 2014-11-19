@@ -58,7 +58,7 @@
             topicInput = $('#topic-input');
             topicInput.on('keyup', helpers.throttle(function(e) {
                 var text = topicInput.val();
-                this.filterByTopics(text)
+                this.filterByTopic(text)
             }));
         };
         
