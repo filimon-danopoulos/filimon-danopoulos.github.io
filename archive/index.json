@@ -1,0 +1,25 @@
+{
+    "archive": {
+        "numberOfEntries": 10,
+        "firstEntryDate": "2014-08-01",
+        "latestEntryDate": "2014-11-29",
+        "entries" : [{
+            "date": "2014-08-01",
+            "title": "Mock archive entry 1",
+            "topics": [
+                "test",
+                "development"
+            ],
+            "numberOfWords": 100,
+            "url": "/posts/2014-08-01_Mock-archive-entry-1.html"
+        }, {
+            "date": "2014-11-29",
+            "title": "Mock archive entry 2",
+            "topics": [
+                "development"
+            ],
+            "numberOfWords": 100,
+            "url": "/posts/2014-11-29_Mock-archive-entry-2.html"
+        }]
+    }
+}
