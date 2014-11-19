@@ -2,7 +2,7 @@
     var Handler = (function() {
         var getArchiveData;
     
-        function Handler() 
+        function Handler() {
             this.index = {};
         };
         
