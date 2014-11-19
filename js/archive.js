@@ -38,7 +38,7 @@
                 if (throttleState) {
                     window.clearInterval(throttleState);
                 }
-                throttleState window.setTimeout(function() {
+                throttleState = window.setTimeout(function() {
                     callback.apply(self, args)
                 }, 300);
             };
