@@ -31,7 +31,7 @@
             helpers = new Helpers(this);
         };
         
-        Handler.prototype.init = function() {o
+        Handler.prototype.init = function() {
             initSearchFormHandlers.call(this);
         };
         
