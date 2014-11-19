@@ -31,14 +31,14 @@
             helpers = new Helpers(this);
         };
         
-        Handler.prototype.init = function() {
+        Handler.prototype.init = function() {o
             initSearchFormHandlers.call(this);
         };
         
         Handler.prototype.filterByTopic = function(text) {
             var topics;
             topics = text.replace(/ /g, '').split(',');
-            $('.archive-entry > .archive-entry-topics')
+            $.makeArray($('.archive-entry > .archive-entry-topics'))
                 .filter(function(element) {
                     return element.text()
                         .replace(/ /g, '')
