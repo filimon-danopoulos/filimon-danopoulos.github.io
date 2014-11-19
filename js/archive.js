@@ -20,11 +20,12 @@
                 }, 300);
             };
         }; 
+        
         return Helpers;
     })();
     
     Handler = (function() {
-        var getArchiveData, initSearchFormHandlers, helpers;
+        var getArchiveData, initSearchFormHandlers, helpers, filterByTopic;
         
         function Handler() {
             this.index = {};
@@ -34,6 +35,12 @@
         Handler.prototype.init = function() {
             getArchiveData.call(this);
             initSearchFormHandlers.call(this);
+        };
+        
+        Handler.prototype.filterByTopic = function(text) {
+            var topics, idsToHide;
+            topics = text.replace(/ /g, '').split(',');
+            alert(text);
         };
         
         getArchiveData = function() {
@@ -51,9 +58,10 @@
             topicInput = $('#topic-input');
             topicInput.on('keyup', helpers.throttle(function(e) {
                 var text = topicInput.val();
-                alert(text)
+                this.filterByTopics(text)
             }));
         };
+        
         
         return Handler;
     })();
