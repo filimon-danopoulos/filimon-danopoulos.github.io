@@ -47,8 +47,8 @@
                         .every(function(topic) {
                             return topics.indexOf(topic) === -1;
                         });
-                }).each(function(element) {
-                    $(element).parent().hide();
+                }).each(function() {
+                    $(this).parent().hide();
                 });
         };
         
