@@ -1,6 +1,6 @@
 {
     "archive": {
-        "numberOfEntries": 10,
+        "numberOfEntries": 2,
         "firstEntryDate": "2014-08-01",
         "latestEntryDate": "2014-11-29",
         "entries" : [{
@@ -11,7 +11,6 @@
                 "development"
             ],
             "numberOfWords": 100,
-            "url": "/posts/2014-08-01_Mock-archive-entry-1.html",
             "id": "archive-entry-0"
         }, {
             "date": "2014-11-29",
@@ -20,7 +19,6 @@
                 "development"
             ],
             "numberOfWords": 100,
-            "url": "/posts/2014-11-29_Mock-archive-entry-2.html",
             "id": "archive-entry-1"
         }]
     }
