@@ -11,7 +11,8 @@
                 "development"
             ],
             "numberOfWords": 100,
-            "url": "/posts/2014-08-01_Mock-archive-entry-1.html"
+            "url": "/posts/2014-08-01_Mock-archive-entry-1.html",
+            "id": "archive-entry-0"
         }, {
             "date": "2014-11-29",
             "title": "Mock archive entry 2",
@@ -19,7 +20,8 @@
                 "development"
             ],
             "numberOfWords": 100,
-            "url": "/posts/2014-11-29_Mock-archive-entry-2.html"
+            "url": "/posts/2014-11-29_Mock-archive-entry-2.html",
+            "id": "archive-entry-1"
         }]
     }
 }
