@@ -32,7 +32,6 @@
         };
         
         Handler.prototype.init = function() {
-            getArchiveData.call(this);
             initSearchFormHandlers.call(this);
         };
         
