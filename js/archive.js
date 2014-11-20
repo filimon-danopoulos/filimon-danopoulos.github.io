@@ -35,22 +35,22 @@
             initSearchFormHandlers.call(this);
         };
         
+        // This method is quite in-effective might cause an issue with many posts.
         Handler.prototype.filterByTopic = function(text) {
             var topics;
             $('.archive-entry').removeClass('archive-topics-hidden')
             if (text === "") {
                 return;
             }
-            topics = text.replace(/ /g, '').split(',');
+            inputTopics = text.toLowerCase().replace(/ /g, '').split(',');
             $('.archive-entry > .archive-entry-topics')
                 .filter(function() {
-                    var element = $(this);
-                    return $(element).text()
-                        .replace(/ /g, '')
-                        .split(',')
-                        .every(function(topic) {
-                            return topics.indexOf(topic) === -1;
-                        });
+                    var element = $(this),
+                        topics = $(element).text().toLowerCase().replace(/ /g, '');
+                        
+                    return inputTopics.every(function(inputTopic) {
+                        return topic.indexOf(inputTopic) === -1;
+                    })
                 }).each(function() {
                     $(this).parent().addClass('archive-topics-hidden');
                 });
