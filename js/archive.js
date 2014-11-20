@@ -49,7 +49,7 @@
                         topics = $(element).text().toLowerCase().replace(/ /g, '');
                         
                     return inputTopics.every(function(inputTopic) {
-                        return topic.indexOf(inputTopic) === -1;
+                        return topics.indexOf(inputTopic) === -1;
                     })
                 }).each(function() {
                     $(this).parent().addClass('archive-topics-hidden');
