@@ -1,3 +1,9 @@
+.archive-topics-hidden,
+.archive-date-hidden,
+.archive-title-hidden {
+    display: none;
+}
+
 .post-date {
     font-size: 0.9em;
 }
