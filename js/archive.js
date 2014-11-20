@@ -37,8 +37,8 @@
         
         Handler.prototype.filterByTopic = function(text) {
             var topics;
+            $('.archive-entry').removeClass('archive-topics-hidden')
             if (text === "") {
-                $('.archive-entry').removeClass('archive-topics-hidden')
                 return;
             }
             topics = text.replace(/ /g, '').split(',');
