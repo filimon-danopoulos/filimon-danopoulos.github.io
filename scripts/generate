@@ -199,7 +199,7 @@ do
     # Create url
     postUrl=$(echo $postSource | sed -e 's/released\//posts\//' -e 's/\.md/\.html/')
     # Replace placeholder with url
-    cat archiveEntry |  sed "s|--archive-href--|$postUrl|i" > tmp
+    cat archiveEntry |  sed "s|--archive-href--|/$postUrl|i" > tmp
     mv tmp archiveEntry
     
     # Add mock topics
