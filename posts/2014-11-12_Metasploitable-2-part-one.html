@@ -27,6 +27,8 @@
 </ul>     
 <hr>
 <div class="post-content">
+<!--hacking, metasploit-->
+
 <h1>Let's hack stuff!</h1>
 
 <p>First and fore most, long time no see. The last couple of months flew by and I haven't really been in the mood of writing. 
@@ -36,7 +38,8 @@ Now I stated experimenting with Kali again and figured I might as well document 
 
 <p>I have set up a Kali VM - the atacker - and a Metasploitable VM - the target - in VirtualBox, that I will be using in this post. 
 Kali is a Linux distro designed for hacking/pentesting and is loaded with tools. Metasploitable is an Ubuntu VM loaded with poorly 
-configured applications that are easily hackable. I will post installation instructions in a future post, but most of it is dead simple and easily found online already. </p>
+configured applications that are easily hackable. I will post installation instructions in a future post, but most of it is dead 
+simple and easily found online already. </p>
 
 <h2>The hack</h2>
 
@@ -44,8 +47,8 @@ configured applications that are easily hackable. I will post installation instr
 
 <h3>Scanning the network</h3>
 
-<p>So after I have fired up my VMs I open the attacking machine and start a terminal. The first thing I want to do is find out where my target is so I 
-turn to <code>nmap</code> and run (result edited):</p>
+<p>So after I have fired up my VMs I open the attacking machine and start a terminal. The first thing I want to do is find out where my 
+target is so I turn to <code>nmap</code> and run (result edited):</p>
 
 <pre><code># nmap  192.168.56.0/24
 
@@ -78,8 +81,9 @@ PORT     STATE SERVICE
 8180/tcp open  unknown
 </code></pre>
 
-<p>I can identify the target by the loads of open ports. This is a virtual network so there are no other machines on the network, this makes finding
-the target easier than it would be in the wild. In a real life scenario you would have to do some research in order to know what machine you should target.</p>
+<p>I can identify the target by the loads of open ports. This is a virtual network so there are no other machines on the network, this 
+makes finding the target easier than it would be in the wild. In a real life scenario you would have to do some research in order 
+to know what machine you should target.</p>
 
 <p>Now that we have our target, <code>192.168.56.103</code> we can do a more advanced scan:</p>
 
@@ -87,8 +91,8 @@ the target easier than it would be in the wild. In a real life scenario you woul
 </code></pre>
 
 <p>This will scan all the ports (<code>-p1-65535</code>) of particular machine, it will also try to detect the OS (<code>-O</code>) and further more it will try
-to identify what versions the software listening to each open port are running (<code>-sV</code>). I save this to a file called <code>target</code> since I like to
-reference the scan later on.</p>
+to identify what versions the software listening to each open port are running (<code>-sV</code>). I save this to a file called <code>target</code> 
+since I like to reference the scan later on.</p>
 
 <p>In this excercise I am only interested in the fisrt service running on port 21, the second scan returns the following:</p>
 
@@ -198,7 +202,7 @@ Hopefully the next service (SSH running on port 22) will be a little tougher.</p
 <div class="container-fluid">
     <div class="row text-muted">
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-left">
-            Words: 876
+            Words: 878
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
             <a href="/" class="back-link"> Home...</a>

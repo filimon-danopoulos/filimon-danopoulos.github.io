@@ -1,3 +1,4 @@
+<!--blog-->
 #Blog updates
 
 I have recently made a couple of updates to the layout of the blog, added a couple of sections 

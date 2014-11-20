@@ -1,37 +1,62 @@
+<!--blog, programming, web-->
 # Designing a site generator
 
-**Disclaimer**: *I have taken some artistic liberties in the timeline of some events since it didn't make for good writing otherwise. Check the commit log of the project [here](https://github.com/filimon-danopoulos/filimon-danopoulos.github.io/commits/master) for a factual rendition.*
+**Disclaimer**: *I have taken some artistic liberties in the timeline of some events since it didn't make for good writing otherwise. 
+Check the commit log of the project [here](https://github.com/filimon-danopoulos/filimon-danopoulos.github.io/commits/master) 
+for a factual rendition.*
 
-My approach to this little project was code first, think second. That usually doesn't work out so good, but considering that I will probably not write more than a couple hundred lines of code that should probably not be an issue. The decision to use Linux tools had already been made so my tools set was well defined. Working with text files in a Linux environment is super nice since the entire OS is based around text files.
+My approach to this little project was code first, think second. That usually doesn't work out so good, but considering 
+that I will probably not write more than a couple hundred lines of code that should probably not be an issue. 
+The decision to use Linux tools had already been made so my tools set was well defined. Working with text files in a Linux 
+environment is super nice since the entire OS is based around text files.
 
-I knew for certain that I wanted to use markdown for writing posts, I also knew that I didn't want to use JavaScript. I love JavaScript don't get me wrong, I just think it is a bit over used. A site composed of static resources doesn't need JavaScript for anything. So, no JavaScript.
+I knew for certain that I wanted to use markdown for writing posts, I also knew that I didn't want to use JavaScript. 
+I love JavaScript don't get me wrong, I just think it is a bit over used. A site composed of static resources doesn't need 
+JavaScript for anything. So, no JavaScript.
  
-Next up was finding a markdown compiler. I run Manjaro, an Arch based distro, so the first thing I did was run `pacman -Ss markdown`. I did not have to do any more searching since that found me the package `markdown`, that does exactly what I want.
+Next up was finding a markdown compiler. I run Manjaro, an Arch based distro, so the first thing I did was run 
+`pacman -Ss markdown`. I did not have to do any more searching since that found me the package `markdown`, 
+that does exactly what I want.
 
 ## First Try
 
-Speed was the primary concern so I went for a monolithic approach. I created a folder `posts` for the markdown files and a single script file `generate`. The script included all the required HTML as strings and depended on appending strings and compiled markdown in a precise order to generate a valid HTML file.
+Speed was the primary concern so I went for a monolithic approach. I created a folder `posts` for the markdown files and 
+a single script file `generate`. The script included all the required HTML as strings and depended on appending strings 
+and compiled markdown in a precise order to generate a valid HTML file.
 
-The heart of the script was (and still is) a loop that itterates over the result from `find "posts/" -name "*.md"`. It saved the path in a variable called `$þostSource` and later compiled and appended the markdown via `markdown "$postSource" >> index.html`.
+The heart of the script was (and still is) a loop that itterates over the result from `find "posts/" -name "*.md"`. 
+It saved the path in a variable called `$þostSource` and later compiled and appended the markdown via 
+`markdown "$postSource" >> index.html`.
 
-With speed being of essence I also created a couple of helper scripts to make publishing a new script easier. Scripts ready I wrote two test posts and started working with the Bootstrap classes on the HTML strings. That clearly wasn't going to work in the long run, not a surprise really. 
+With speed being of essence I also created a couple of helper scripts to make publishing a new script easier. 
+Scripts ready I wrote two test posts and started working with the Bootstrap classes on the HTML strings. 
+That clearly wasn't going to work in the long run, not a surprise really. 
 
 ## Second Try
 
-The HTML strings had to go so I broke them out into template files and stored them in a folder, `templates`. This was done crudely, that is I created two parted template files. That way I didn't have to change my script layout too much, I only hade to change `echo "..." >> index.html` to `cat "template/..." >> index.html`.
+The HTML strings had to go so I broke them out into template files and stored them in a folder, `templates`. 
+This was done crudely, that is I created two parted template files. That way I didn't have to change my script layout too much, 
+I only hade to change `echo "..." >> index.html` to `cat "template/..." >> index.html`.
  
-This small change made it possible to add Boostrap classes and modify the HMTL freely, since I could now edit a formated HTML file. I did some experimenting and decided on a simple [panel](http://getbootstrap.com/components/#panels) based layout.
+This small change made it possible to add Boostrap classes and modify the HMTL freely, since 
+I could now edit a formated HTML file. I did some experimenting and decided on a simple 
+[panel](http://getbootstrap.com/components/#panels) based layout.
 
 First "real" post was written (Hello World) and put online, read it [here](/posts/2014-08-16_Hello-World.html).
 
 ## Third Try
 
-Editing the post template split across two files was a bit of a chore so I moved everything into a single template. I added placeholders for different types of content into the templates. Since the posts where saved to files I figured I could easily replace the placeholders with the contents of a file. It turned out I had to search for quite a while before I found the solution. For example this is how I generate a post:
+Editing the post template split across two files was a bit of a chore so I moved everything into a single template. 
+I added placeholders for different types of content into the templates. Since the posts where saved to files I 
+figured I could easily replace the placeholders with the contents of a file. It turned out I had to search for 
+quite a while before I found the solution. For example this is how I generate a post:
  
     cat "templates/post.html" | sed "/$postPattern/ r $htmlPostFileName" | sed "/$postPattern/ d" > tmp
     mv tmp "$htmlPostFileName"
     
-This can be simplified further but I wanted the legibility this provides. The `r` option inserts the contents of the file after the pattern (read here from `$postPattern`) and the `d` option deletes the placeholder. For other placeholder I use the following pattern (in this case post date):
+This can be simplified further but I wanted the legibility this provides. The `r` option inserts the contents 
+of the file after the pattern (read here from `$postPattern`) and the `d` option deletes the placeholder. 
+For other placeholder I use the following pattern (in this case post date):
 
     cat "$htmlPostFileName" | sed "s/--date--/$postDate/i" > tmp
     mv tmp "$htmlPostFileName"
@@ -47,8 +72,16 @@ Since I had the basics sorted, I created complete HTML files of each post:
         "templates/page_tail.html" > tmp
     mv tmp "$htmlPostFileName" 
 
-and linked to them from the title of each post. It was fairly obvious that keeping the full length posts on the main page would make it hopelessly long. So the next natural step was was shortening the posts on the main page. A preview of each file was generated by doing `head "$postSource" | markdown > "$previewFileName"` and used instead of the post on the main page. This included creating a new template for a preview item. I added some buttons to the different templates, post and preview and fine tuned the visual a bit. In addition to this a blog header and a copyright notice where added and that is where the blog is today.
+and linked to them from the title of each post. It was fairly obvious that keeping the full length posts 
+on the main page would make it hopelessly long. So the next natural step was was shortening the posts on the main page. 
+A preview of each file was generated by doing `head "$postSource" | markdown > "$previewFileName"` and used instead of 
+the post on the main page. This included creating a new template for a preview item. I added some buttons to the different 
+templates, post and preview and fine tuned the visual a bit. In addition to this a blog header and a copyright notice where 
+added and that is where the blog is today.
 
 ## What's next
 
-Interface changes are made all the time, even during the writing of this post changes have been made. I have reallized that I can probably not run this blog without an archive function, that will probably require searching and quite lickely also JavaScript (I will fight it I promise!). Navigating the site will probably become a concern as the number of views increases. Who knows, I might even regret the fact that I decided to roll my own site generation, time will tell!
+Interface changes are made all the time, even during the writing of this post changes have been made. I have reallized that 
+I can probably not run this blog without an archive function, that will probably require searching and quite lickely also 
+JavaScript (I will fight it I promise!). Navigating the site will probably become a concern as the number of views increases. 
+Who knows, I might even regret the fact that I decided to roll my own site generation, time will tell!

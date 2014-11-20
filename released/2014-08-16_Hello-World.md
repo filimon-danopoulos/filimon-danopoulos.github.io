@@ -1,3 +1,4 @@
+<!--blog-->
 # Hello World!
 
 This is my try at a minimalist blog. There will be no fancy comment sections, no fancy ads and no fancy

@@ -1,3 +1,4 @@
+<!--hacking, metasploit, ssh-->
 # SSH follow up
 
 Since I did my last post I have been meaning to write a follow up on the failed attempt at using: `auxiliary/scanner/ssh/ssh_enumusers`.
@@ -6,8 +7,9 @@ the enumeration again with the known users as the user name list.
 
 ## Another go
 
-I managed to get a list of al the users during [this](https://filimon-danopoulos.github.io/posts/2014-11-15_Metasploitable-2-part-one.html) exercise by exploiting
-a null session vulnerability in Samba. I saved it to the file `users.lst` so let's launch the exploit with that file.
+I managed to get a list of al the users during [this](https://filimon-danopoulos.github.io/posts/2014-11-15_Metasploitable-2-part-one.html)
+exercise by exploiting a null session vulnerability in Samba. I saved it to the file `users.lst` so let's launch the exploit 
+with that file.
 
     msf > use auxiliary/scanner/ssh/ssh_enumusers 
     msf auxiliary(ssh_enumusers) > show option
@@ -70,8 +72,9 @@ a null session vulnerability in Samba. I saved it to the file `users.lst` so let
     [*] Scanned 1 of 1 hosts (100% complete)
     [*] Auxiliary module execution completed
     
-Not a single user found, but we know that all users exist! That means that this version of SSH is not actually vulnerable to this attack.
-I have done some searching about this version online and it seems like it suffers from another vulnerability namely [this](http://www.exploit-db.com/exploits/5720/) one on
-http://www.exploit-db.com/. Who knows I might come around doing that if I get bored enough...
+Not a single user found, but we know that all users exist! That means that this version of SSH is not actually vulnerable to 
+this attack. I have done some searching about this version online and it seems like it suffers from another vulnerability namely 
+[this](http://www.exploit-db.com/exploits/5720/) one on http://www.exploit-db.com/. Who knows I might come around doing 
+that if I get bored enough...
 
 

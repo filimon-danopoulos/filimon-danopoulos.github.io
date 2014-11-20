@@ -1,3 +1,4 @@
+<!--hacking, metasploit-->
 # Let's hack stuff!
 
 First and fore most, long time no see. The last couple of months flew by and I haven't really been in the mood of writing. 
@@ -7,7 +8,8 @@ Now I stated experimenting with Kali again and figured I might as well document 
 
 I have set up a Kali VM - the atacker - and a Metasploitable VM - the target - in VirtualBox, that I will be using in this post. 
 Kali is a Linux distro designed for hacking/pentesting and is loaded with tools. Metasploitable is an Ubuntu VM loaded with poorly 
-configured applications that are easily hackable. I will post installation instructions in a future post, but most of it is dead simple and easily found online already. 
+configured applications that are easily hackable. I will post installation instructions in a future post, but most of it is dead 
+simple and easily found online already. 
 
 ## The hack
 
@@ -15,8 +17,8 @@ This is a very simple exploit and took about ten minutes. The write up took sign
 
 ### Scanning the network
 
-So after I have fired up my VMs I open the attacking machine and start a terminal. The first thing I want to do is find out where my target is so I 
-turn to `nmap` and run (result edited):
+So after I have fired up my VMs I open the attacking machine and start a terminal. The first thing I want to do is find out where my 
+target is so I turn to `nmap` and run (result edited):
 
     # nmap  192.168.56.0/24
 
@@ -48,16 +50,17 @@ turn to `nmap` and run (result edited):
     8009/tcp open  ajp13
     8180/tcp open  unknown
  
-I can identify the target by the loads of open ports. This is a virtual network so there are no other machines on the network, this makes finding
-the target easier than it would be in the wild. In a real life scenario you would have to do some research in order to know what machine you should target.
+I can identify the target by the loads of open ports. This is a virtual network so there are no other machines on the network, this 
+makes finding the target easier than it would be in the wild. In a real life scenario you would have to do some research in order 
+to know what machine you should target.
 
 Now that we have our target, `192.168.56.103` we can do a more advanced scan:
 
     # nmap -sV -O -p1-65535 192.168.56.103 > target
     
 This will scan all the ports (`-p1-65535`) of particular machine, it will also try to detect the OS (`-O`) and further more it will try
-to identify what versions the software listening to each open port are running (`-sV`). I save this to a file called `target` since I like to
-reference the scan later on.
+to identify what versions the software listening to each open port are running (`-sV`). I save this to a file called `target` 
+since I like to reference the scan later on.
 
 In this excercise I am only interested in the fisrt service running on port 21, the second scan returns the following:
 

@@ -27,6 +27,8 @@
 </ul>     
 <hr>
 <div class="post-content">
+<!--hacking, metasploit, ssh-->
+
 <h1>SSH follow up</h1>
 
 <p>Since I did my last post I have been meaning to write a follow up on the failed attempt at using: <code>auxiliary/scanner/ssh/ssh_enumusers</code>.
@@ -35,8 +37,9 @@ the enumeration again with the known users as the user name list.</p>
 
 <h2>Another go</h2>
 
-<p>I managed to get a list of al the users during <a href="https://filimon-danopoulos.github.io/posts/2014-11-15_Metasploitable-2-part-one.html">this</a> exercise by exploiting
-a null session vulnerability in Samba. I saved it to the file <code>users.lst</code> so let's launch the exploit with that file.</p>
+<p>I managed to get a list of al the users during <a href="https://filimon-danopoulos.github.io/posts/2014-11-15_Metasploitable-2-part-one.html">this</a>
+exercise by exploiting a null session vulnerability in Samba. I saved it to the file <code>users.lst</code> so let's launch the exploit 
+with that file.</p>
 
 <pre><code>msf &gt; use auxiliary/scanner/ssh/ssh_enumusers 
 msf auxiliary(ssh_enumusers) &gt; show option
@@ -100,15 +103,16 @@ msf auxiliary(ssh_enumusers) &gt; run
 [*] Auxiliary module execution completed
 </code></pre>
 
-<p>Not a single user found, but we know that all users exist! That means that this version of SSH is not actually vulnerable to this attack.
-I have done some searching about this version online and it seems like it suffers from another vulnerability namely <a href="http://www.exploit-db.com/exploits/5720/">this</a> one on
-http://www.exploit-db.com/. Who knows I might come around doing that if I get bored enough...</p>
+<p>Not a single user found, but we know that all users exist! That means that this version of SSH is not actually vulnerable to 
+this attack. I have done some searching about this version online and it seems like it suffers from another vulnerability namely 
+<a href="http://www.exploit-db.com/exploits/5720/">this</a> one on http://www.exploit-db.com/. Who knows I might come around doing 
+that if I get bored enough...</p>
 </div>
 <hr>
 <div class="container-fluid">
     <div class="row text-muted">
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-left">
-            Words: 610
+            Words: 613
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
             <a href="/" class="back-link"> Home...</a>
