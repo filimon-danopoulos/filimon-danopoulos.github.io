@@ -37,6 +37,10 @@
         
         Handler.prototype.filterByTopic = function(text) {
             var topics;
+            if (text === "") {
+                $('.archive-entry').removeClass('archive-topics-hidden')
+                return;
+            }
             topics = text.replace(/ /g, '').split(',');
             $('.archive-entry > .archive-entry-topics')
                 .filter(function() {
@@ -48,7 +52,7 @@
                             return topics.indexOf(topic) === -1;
                         });
                 }).each(function() {
-                    $(this).parent().hide();
+                    $(this).parent().addClass('archive-topics-hidden');
                 });
         };
         
