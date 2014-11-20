@@ -42,7 +42,7 @@
             if (text === "") {
                 return;
             }
-            inputTopics = text.toLowerCase().replace(/ /g, '').split(',');
+            var inputTopics = text.toLowerCase().replace(/ /g, '').split(',');
             $('.archive-entry > .archive-entry-topics')
                 .filter(function() {
                     var element = $(this),
