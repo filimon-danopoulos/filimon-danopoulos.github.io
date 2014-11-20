@@ -203,7 +203,7 @@ do
     mv tmp archiveEntry
     
     # Add mock topics
-    topics="test"
+    topics=$(head -n 1 "$postSource" | cut -c 5- | rev | cut -c 4- | rev)
     # Replace placeholder with url
     cat archiveEntry |  sed "s/--archive-topics--/$topics/i" > tmp
     mv tmp archiveEntry
