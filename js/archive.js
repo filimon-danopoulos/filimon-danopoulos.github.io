@@ -38,7 +38,7 @@
         // This method is quite in-effective might cause an issue with many posts.
         Handler.prototype.filterByTopic = function(text) {
             var topics;
-            $('.archive-entry').removeClass('archive-topics-hidden')
+            $('.archive-entry').removeClass('archive-topics-hidden');
             if (text === "") {
                 return;
             }
@@ -56,12 +56,32 @@
                 });
         };
         
+        Handler.prototype.filterByDate = function(text) {
+            var titleInput;
+            $('.archive-entry').removeClass('archive-title-hidden');
+            if (text === "") {
+                return;
+            }
+            titleInput = text.toLowerCase();
+            $('.archive-entry > .archive-entry-topics')
+                .filter(function() {
+                    var element = $(this);   
+                    return element.text().toLowerCase().indexOf(titleInput) === -1;
+                }).each(function() {
+                    $(this).parent().addClass('archive-title-hidden');
+                });
+        }
+        
         initSearchFormHandlers = function() {
-            var topicInput;
+            var topicInput, titleInput;
             topicInput = $('#topic-input');
             topicInput.on('keyup', helpers.throttle(function(e) {
-                var text = topicInput.val();
-                this.filterByTopic(text)
+                this.filterByTopic(topicInput.val());
+            }));
+            
+            titleInput = $('#title-input');
+            titleInput.on('keyup', helpers.throttle(function(e) {
+                this.filterByTopic(titleInput.val());
             }));
         };
         
