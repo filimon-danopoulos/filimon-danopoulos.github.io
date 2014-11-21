@@ -63,7 +63,7 @@
                 return;
             }
             titleInput = text.toLowerCase();
-            $('.archive-entry > .archive-entry-topics')
+            $('.archive-entry > .archive-entry-title')
                 .filter(function() {
                     var element = $(this);   
                     return element.text().toLowerCase().indexOf(titleInput) === -1;
