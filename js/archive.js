@@ -65,8 +65,9 @@
             titleInput = text.toLowerCase();
             $('.archive-entry > .archive-entry-title')
                 .filter(function() {
-                    var element = $(this);   
-                    return element.text().toLowerCase().indexOf(titleInput) === -1;
+                    var element = $(this),
+                        title = element.children('a')[0].text().toLowerCase();
+                    return title.indexOf(titleInput) === -1;
                 }).each(function() {
                     $(this).parent().addClass('archive-title-hidden');
                 });
