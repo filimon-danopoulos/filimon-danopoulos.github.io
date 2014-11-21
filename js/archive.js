@@ -56,7 +56,7 @@
                 });
         };
         
-        Handler.prototype.filterByDate = function(text) {
+        Handler.prototype.filterByTitle = function(text) {
             var titleInput;
             $('.archive-entry').removeClass('archive-title-hidden');
             if (text === "") {
@@ -82,7 +82,7 @@
             
             titleInput = $('#title-input');
             titleInput.on('keyup', helpers.throttle(function(e) {
-                this.filterByTopic(titleInput.val());
+                this.filterByTitle(titleInput.val());
             }));
         };
         
