@@ -150,11 +150,10 @@ postCount=1;
 maxNumberOfPreviews=10;
 for postSource in $(find "released/" -name "*.md" | sort -n -r)
 do
-    if [[ $postCount -le $maxNumerOfPreviews ]]; then
-        # Create a preview of the post
-        generatePostPreview "$postSource" "index.html"
+    if [[ $postCount -le $maxNumberOfPreviews ]]; then
+        generatePostPreview "$postSource" "index.html"        
     fi
-    
+     
     #Generate the entire post
     htmlPostFileName=$(generatePost "$postSource")
     
@@ -165,7 +164,7 @@ do
     mv tmp "$htmlPostFileName" 
     
     # Increment post count
-    postCount=$postCount+1
+    postCount=$(($postCount+1))
 done
 
 # Append the tail of the document so that we have comple the HTML
