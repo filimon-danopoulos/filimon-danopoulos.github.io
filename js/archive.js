@@ -76,12 +76,12 @@
         initSearchFormHandlers = function() {
             var topicInput, titleInput;
             topicInput = $('#topic-input');
-            topicInput.on('keyup', helpers.throttle(function(e) {
+            topicInput.on('keyup change', helpers.throttle(function(e) {
                 this.filterByTopic(topicInput.val());
             }));
             
             titleInput = $('#title-input');
-            titleInput.on('keyup', helpers.throttle(function(e) {
+            titleInput.on('keyup change', helpers.throttle(function(e) {
                 this.filterByTitle(titleInput.val());
             }));
         };
