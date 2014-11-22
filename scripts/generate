@@ -70,7 +70,7 @@ generatePostPreview() {
     
     # Insert post label from file name
     # First remove the date part, then remove the file extension, lastly replace hyphens with spaces
-    postHeader=$(echo "$previewFileName" | cut -d'_' -f2 | cut -d'.' -f1 | tr '-' ' ')
+    postHeader=$(echo "$postSource" | cut -d'_' -f2 | cut -d'.' -f1 | tr '-' ' ')
     cat "$previewFileName" | sed "s/--header--/$postHeader/i" > tmp
     mv tmp "$previewFileName"
     
