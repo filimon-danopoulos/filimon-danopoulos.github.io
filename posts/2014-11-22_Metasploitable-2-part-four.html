@@ -31,7 +31,7 @@
 
 <h1>Back to basics</h1>
 
-<p>This is the fourth part of my series about hacking a Metasplitable VM. You can find the previous posts here:</p>
+<p>This is the fourth part of my series about hacking a Metasploitable 2 VM. You can find the previous posts here:</p>
 
 <ul>
 <li><a href="http://filimon-danopoulos.github.io/posts/2014-11-12_Metasploitable-2-part-one.html">Part one</a></li>
@@ -79,7 +79,7 @@ So this time I will focus on telnet running on port 23.</p>
 
 <h2>The target</h2>
 
-<p>Telnet, where to begin... Generally, telnet is a good indicator that something is misconfigured. There are modern
+<p>Telnet, telnet, where to begin... Generally, telnet is a good indicator that something is misconfigured. There are modern
 alternatives that almost always are a better fit, SSH for example.
 The easiest thing to do as far as telnet is concerned is just connect to it with the <code>telnet</code> command:</p>
 
@@ -148,11 +148,16 @@ Matching Modules
 
  Name                                               Rank       Description
  ----                                               ----       -----------
- auxiliary/admin/http/dlink_dir_300_600_exec_noauth normal     D-Link DIR-600 / DIR-300 Unauthenticated Remote Command Execution
- auxiliary/scanner/telnet/telnet_encrypt_overflow   normal     Telnet Service Encyption Key ID Overflow Detection
- exploit/linux/http/dlink_diagnostic_exec_noauth    excellent  D-Link DIR-645 / DIR-815 diagnostic.php Command Execution
- exploit/linux/telnet/telnet_encrypt_keyid          great      Linux BSD-derived Telnet Service Encryption Key ID Buffer Overflow
- exploit/solaris/telnet/fuser                       excellent  Sun Solaris Telnet Remote Authentication Bypass Vulnerability
+ auxiliary/admin/http/dlink_dir_300_600_exec_noauth normal     D-Link DIR-600 / DIR-300 Unauthenticated 
+                                                               Remote Command Execution
+ auxiliary/scanner/telnet/telnet_encrypt_overflow   normal     Telnet Service Encyption Key ID Overflow 
+                                                               Detection
+ exploit/linux/http/dlink_diagnostic_exec_noauth    excellent  D-Link DIR-645 / DIR-815 diagnostic.php 
+                                                               Command Execution
+ exploit/linux/telnet/telnet_encrypt_keyid          great      Linux BSD-derived Telnet Service 
+                                                               Encryption Key ID Buffer Overflow
+ exploit/solaris/telnet/fuser                       excellent  Sun Solaris Telnet Remote Authentication 
+                                                               Bypass Vulnerability
  exploit/solaris/telnet/ttyprompt                   excellent  Solaris in.telnetd TTYPROMPT Buffer Overflow
 </code></pre>
 
@@ -230,7 +235,7 @@ more or less hacked it self. Next time I will try to do some thing more interest
 <div class="container-fluid">
     <div class="row text-muted">
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-left">
-            Words: 987
+            Words: 989
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
             <a href="/" class="back-link"> Home...</a>
