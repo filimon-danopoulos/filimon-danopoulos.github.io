@@ -56,8 +56,9 @@ generatePost() {
 
 generatePostPreview() {
     postSource=$1
+    targetFile=$2
     
-    previewFileName=$(echo $postSource | sed -e 's/released\//previews\//' -e 's/\.md/\.html/')
+    previewFileName="preview"
     
     # Generate the post content and save it in a temporary file
     head "$postSource" | markdown > "$previewFileName"
@@ -93,7 +94,11 @@ generatePostPreview() {
     cat "$previewFileName" | sed "s/--date--/$postDate/i" > tmp
     mv tmp "$previewFileName"
     
-    echo "$previewFileName"
+    # Append newly created preview to index.html document
+    cat "$previewFileName" >> "$targetFile"
+    
+    # Remove temp file
+    rm "$previewFileName"
 }
 
 
@@ -141,13 +146,14 @@ generateNavBar "home"
 
 # Loop over each markdown file in the post_src directory.
 # A post is assumed to start with a date e.g. 2014-08-16
+postCount=1;
+maxNumberOfPreviews=10;
 for postSource in $(find "released/" -name "*.md" | sort -n -r)
 do
-    # Create a preview of the post
-    previewFileName=$(generatePostPreview "$postSource")
-    
-    # Append newly created preview to index.html document
-    cat "$previewFileName" >> index.html
+    if [[ $postCount -le $maxNumerOfPreviews ]]; then
+        # Create a preview of the post
+        generatePostPreview "$postSource" "index.html"
+    fi
     
     #Generate the entire post
     htmlPostFileName=$(generatePost "$postSource")
@@ -158,6 +164,8 @@ do
         "templates/page_tail.html" > tmp
     mv tmp "$htmlPostFileName" 
     
+    # Increment post count
+    postCount=$postCount+1
 done
 
 # Append the tail of the document so that we have comple the HTML
