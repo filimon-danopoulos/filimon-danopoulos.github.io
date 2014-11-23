@@ -73,7 +73,7 @@
                 });
         }
         
-        Handler.prototype.filterByTitle = function(text) {
+        Handler.prototype.filterByDate = function(text) {
             var dateInput;
             $('.archive-entry').removeClass('archive-date-hidden');
             if (text === "") {
