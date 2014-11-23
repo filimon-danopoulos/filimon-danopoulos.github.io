@@ -101,7 +101,7 @@
             titleInput.on('keyup change', helpers.throttle(function(e) {
                 this.filterByTitle(titleInput.val());
             }));
-            dateInput = $('#date-input');
+            dateInput = $('#post-date-input');
             dateInput.on('keyup change', helpers.throttle(function(e) {
             
                 this.filterByDate(dateInput.val());
