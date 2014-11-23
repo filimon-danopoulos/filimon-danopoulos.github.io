@@ -83,7 +83,7 @@
             $('.archive-entry > .archive-entry-date')
                 .filter(function() {
                     var element = $(this),
-                        title = element.children('a').text().toLowerCase();
+                        title = element.text().toLowerCase();
                     return title.indexOf(dateInput) === -1;
                 }).each(function() {
                     $(this).parent().addClass('archive-date-hidden');
