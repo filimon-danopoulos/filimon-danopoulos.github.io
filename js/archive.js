@@ -73,8 +73,25 @@
                 });
         }
         
+        Handler.prototype.filterByTitle = function(text) {
+            var dateInput;
+            $('.archive-entry').removeClass('archive-date-hidden');
+            if (text === "") {
+                return;
+            }
+            dateInput = text.toLowerCase();
+            $('.archive-entry > .archive-entry-date')
+                .filter(function() {
+                    var element = $(this),
+                        title = element.children('a').text().toLowerCase();
+                    return title.indexOf(titleInput) === -1;
+                }).each(function() {
+                    $(this).parent().addClass('archive-date-hidden');
+                });
+        }
+        
         initSearchFormHandlers = function() {
-            var topicInput, titleInput;
+            var topicInput, titleInput, dateInput;
             topicInput = $('#topic-input');
             topicInput.on('keyup change', helpers.throttle(function(e) {
                 this.filterByTopic(topicInput.val());
@@ -83,6 +100,11 @@
             titleInput = $('#title-input');
             titleInput.on('keyup change', helpers.throttle(function(e) {
                 this.filterByTitle(titleInput.val());
+            }));
+            dateInput = $('#date-input');
+            dateInput.on('keyup change', helpers.throttle(function(e) {
+            
+                this.filterByDate(dateInput.val());
             }));
         };
         
