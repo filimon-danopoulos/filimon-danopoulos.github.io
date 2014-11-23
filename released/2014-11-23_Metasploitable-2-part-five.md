@@ -1,5 +1,5 @@
 <!--hacking, metasploit, smtp-->
-# Third post is a charm
+# Mailploitation
 
 For this post I will target the SMTP server running on the Metasploitable 2 VM I have set up as my target. By now my approach
 should be clear:
