@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Programming and stuff...</title>
+
+        
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/css/blog.css">
+        
+         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <header class="text-center jumbotron hidden-xs hidden-sm">
+            <h1 class="blog-title">Programming and stuff...</h1>
+            <p class="blog-description text-muted">
+                A simple blog where I write about programming - mostly JavaScript and C# - the web and whatever else I  might think of.
+            </p>
+        </header>   
+        <section class="container">
+<ul class="nav nav-pills">
+    <li role="presentation" class=""><a href="/">Home</a></li>
+    <li role="presentation" class=""><a href="/archive">Archive</a></li>
+    <li role="presentation" class=""><a href="/about">About</a></li>
+</ul>     
+<hr>
+<div class="post-content">
+<!--programming, gotchas, work, csharp-->
+
+<h1>Copying objects</h1>
+
+<p>Today something weird happened at work. A couple of weeks ago I updated a caching solution to return a copy of the cached object since we
+had a couple of issues with mutation of the cachee. When I got in to the office today I had a mail in my inbox that pointed to said commit 
+and claiming it was the culprit of an issue with some values turning up as 25.0 instead of 25.</p>
+
+<p>We had previously experienced issues with locale so I assumed that some locale-specific value got cached and depended on mutability to
+function correctly. After pursuing that lead for a while I didn't feel it. So I looked for other alternatives.</p>
+
+<p>In order to create true copies of the objects I used JSON serialization/deserialization. As it turns out, Json.Net always serializes doubles
+with a decimal. So when we serialized an object with a decimal value the deserialization yielded a different decimal value than what was originally 
+saved in the cache.</p>
+
+<p>We eventually solved it by writing a custom decimal formater that didn't append ".0", an interesting gotcha don't you think?</p>
+</div>
+<hr>
+<div class="container-fluid">
+    <div class="row text-muted">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-left">
+            Words: 191
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+            <a href="/" class="back-link"> Home...</a>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-right">
+            2014-11-24
+        </div>
+    </div> 
+</div>
+<script src="/js/post.js"></script>
+        </section>
+        <footer class="text-center text-muted">
+            <a href="https://github.com/filimon-danopoulos/">&copy; Filimon Danopoulos</a>
+        </footer>
+    </body>
+</html>

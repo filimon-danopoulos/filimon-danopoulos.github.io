@@ -1,4 +1,4 @@
-<!--programming, typescript-->
+<!--programming, gotchas, typescript-->
 # Typescript
  
 Typescript is Microsoft's attempt at a statically typed superset of JavaScript, and they have done quite a good job. 

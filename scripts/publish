@@ -29,3 +29,6 @@ git commit -m "$CommitMessage"
 
 # Push the changes
 git push
+
+# Remove all temp files
+find . -name "*~" | xargs rm

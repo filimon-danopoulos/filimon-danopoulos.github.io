@@ -29,6 +29,44 @@
 <div class="panel panel-default text-left">
     <div class="panel-heading">
         <h1 class="panel-title">
+            <a href="/posts/2014-11-24_Copying-objects.html">
+                Copying objects
+            </a>
+        </h1>
+    </div>
+    <div class="panel-body preview">
+        <div class="preview-text">    
+<!--programming, gotchas, work, csharp-->
+
+<h1>Copying objects</h1>
+
+<p>Today something weird happened at work. A couple of weeks ago I updated a caching solution to return a copy of the cached object since we
+had a couple of issues with mutation of the cachee. When I got in to the office today I had a mail in my inbox that pointed to said commit 
+and claiming it was the culprit of an issue with some values turning up as 25.0 instead of 25.</p>
+
+<p>We had previously experienced issues with locale so I assumed that some locale-specific value got cached and depended on mutability to
+function correctly. After pursuing that lead for a while I didn't feel it. So I looked for other alternatives.</p>
+        </div>
+        <div class="text-center preview-continue">
+            <a href="/posts/2014-11-24_Copying-objects.html">Continue Reading...</a>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div class="container-fluid">
+            <div class="row text-muted">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                    Words: 191
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6  text-right">
+                    2014-11-24
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+<div class="panel panel-default text-left">
+    <div class="panel-heading">
+        <h1 class="panel-title">
             <a href="/posts/2014-11-23_Metasploitable-2-part-five.html">
                 Metasploitable 2 part five
             </a>
@@ -374,45 +412,6 @@ The decision to use Linux tools had already been made so my tools set was well d
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6  text-right">
                     2014-08-21
-                </div>
-            </div> 
-        </div>
-    </div>
-</div>
-<div class="panel panel-default text-left">
-    <div class="panel-heading">
-        <h1 class="panel-title">
-            <a href="/posts/2014-08-20_Typescript:-type-assertion-gotcha.html">
-                Typescript: type assertion gotcha
-            </a>
-        </h1>
-    </div>
-    <div class="panel-body preview">
-        <div class="preview-text">    
-<!--programming, typescript-->
-
-<h1>Typescript</h1>
-
-<p>Typescript is Microsoft's attempt at a statically typed superset of JavaScript, and they have done quite a good job. 
-One of my biggest issues with JavaScript is the lack of good IDEs. Since I am a C# developer I am used to the tooling of 
-Visual Studio, I always missed that in JavaScript. One of the side effects of having a static typing is that a lot of 
-tooling becomes possible, so that is nice.</p>
-
-<p>That aside, the main point of having static types is that code is verified at compile time. That way a lot of bugs 
-that happen in JavaScript are eliminated entirely. If you are interested in this you can read more </p>
-        </div>
-        <div class="text-center preview-continue">
-            <a href="/posts/2014-08-20_Typescript:-type-assertion-gotcha.html">Continue Reading...</a>
-        </div>
-    </div>
-    <div class="panel-footer">
-        <div class="container-fluid">
-            <div class="row text-muted">
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
-                    Words: 511
-                </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6  text-right">
-                    2014-08-20
                 </div>
             </div> 
         </div>
