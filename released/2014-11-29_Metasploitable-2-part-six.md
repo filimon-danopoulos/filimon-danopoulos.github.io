@@ -1,8 +1,8 @@
 <!--hacking, metasploit, dns-->
 # Another go
 
-After the [last](URL) flop I had high hopes of actually getting a shell, preferably root. So I was a bit disappointed that
-the service that was next in line was:
+After the [last](http://filimon-danopoulos.github.io/posts/2014-11-23_Metasploitable-2-part-five.html) flop I had high hopes of actually 
+getting a shell, preferably root. So I was a bit disappointed that the service that was next in line was:
 
     53/tcp    open  domain      ISC BIND 9.4.2
     
