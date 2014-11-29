@@ -27,6 +27,10 @@ ul.nav {
     display: inline-block;
 }
 
+.blog-description {
+    max-width: 970px;
+}
+
 /*
  * Override Bootstrap's default container.
  */
