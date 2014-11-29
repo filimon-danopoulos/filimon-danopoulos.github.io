@@ -1,4 +1,4 @@
-<!--hacking, metasploit, http-->
+<!--hacking, metasploit, dns-->
 # Another go
 
 After the [last](URL) flop I had high hopes of actually getting a shell, preferably root. So I was a bit disappointed that
