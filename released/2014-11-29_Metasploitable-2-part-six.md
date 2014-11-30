@@ -197,6 +197,10 @@ With the un-patched code the size of `val` is only checked if the current charac
 expert by any means and I don't know this code base  but as far as I could tell, this means that the last `val` could 
 potentially be overwritten by supplying for example `255.255.255.XXX` where `XXX` is an arbitrary 32-bit integer.
 
+**Edit (2014-11-30):**_Since I wrote this I have thought a bit more about it I am not certain I get everything entirely right. First
+and foremost the above conclusion is almost certainly wrong. Nothing will be written out of bounds, the interger will overflow. This 
+could potentially be a bit more usefull but the impact is probably limited by the very nature of the parsed number._
+
 So I could overwrite a bit of memory and corrupt it but nothing really useful. Post-patch this vulnerability does not exist
 since the check is always performed.
 

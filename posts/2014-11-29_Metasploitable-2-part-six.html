@@ -234,6 +234,10 @@ than <code>0xff</code> or 255 in decimal. </p>
 expert by any means and I don't know this code base  but as far as I could tell, this means that the last <code>val</code> could 
 potentially be overwritten by supplying for example <code>255.255.255.XXX</code> where <code>XXX</code> is an arbitrary 32-bit integer.</p>
 
+<p><strong>Edit (2014-11-30):</strong><em>Since I wrote this I have thought a bit more about it I am not certain I get everything entirely right. First
+and foremost the above conclusion is almost certainly wrong. Nothing will be written out of bounds, the interger will overflow. This 
+could potentially be a bit more usefull but the impact is probably limited by the very nature of the parsed number.</em></p>
+
 <p>So I could overwrite a bit of memory and corrupt it but nothing really useful. Post-patch this vulnerability does not exist
 since the check is always performed.</p>
 
@@ -249,7 +253,7 @@ not be exploited.</p>
 <div class="container-fluid">
     <div class="row text-muted">
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-left">
-            Words: 1335
+            Words: 1400
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
             <a href="/" class="back-link"> Home...</a>
