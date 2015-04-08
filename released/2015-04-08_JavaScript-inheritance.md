@@ -246,6 +246,8 @@ The most important thing to note is that there is no longer need for any assignm
 
 ### ES6 classes
 
+Again for completeness sake let's look at the ES6 variant:
+
     class Person {
         constructor(name, age) {
             this.name = name;
@@ -273,3 +275,14 @@ The most important thing to note is that there is no longer need for any assignm
 
     var employedFilimon = new Employee("Filimon", 26, "Danopoulos Inc.");
     employedFilimon.getInfo(); // returns "My name is Filimon and I am 26 years old. I work at Danopoulos Inc."
+
+
+This is exactly what you would expect from classes, there are few surprises. It's worth noting that
+inheritance is controlled via the new keyword `extends` and that the parent class can be accessed via the new
+keyword `super`.
+
+## Conclusion
+
+As long as you are stuck with ES5, you will have to pick either prototype based inheritance with `Object.create` or
+constructor function based inheritance. Both have their own set of drawbacks I personally prefer the object based.
+Of course I use TypeScript whenever possible and it tries to use the same set of functionality as ES6!
