@@ -17,4 +17,4 @@ postPath="new/"$(date -I)"_"$(echo "$postTitle" | tr ' ' '-')".md"
 touch "$postPath"
 
 # Open it in vim
-gvim "$postPath"
+atom "$postPath"
