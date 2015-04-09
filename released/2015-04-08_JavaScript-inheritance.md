@@ -261,7 +261,7 @@ Again for completeness sake let's look at the ES6 variant:
 
     class Employee extends Person {
         constructor(name, age, employer) {
-            super(this, name, age);
+            super(name, age);
             this.employer = employer;
         }
         getInfo() {
