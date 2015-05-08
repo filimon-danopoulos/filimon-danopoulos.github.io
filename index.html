@@ -37,6 +37,17 @@
     </div>
     <div class="panel-body preview">
         <div class="preview-text">    
+<!--typescript,work,programming,knockout-->
+
+<h1>TypeScript constructors - another gotcha</h1>
+
+<p>I am refactoring a lot of TypeScript code that has explicit AMD modules at work right now.
+It uses the JavaScript MVVM libray Knockout and in addition to the AMD modules it has a
+bit of "old" TypeScript to glue it together.</p>
+
+<h2>Knockout, briefly</h2>
+
+<p>This library has a construct that is called a computed observable.</p>
         </div>
         <div class="text-center preview-continue">
             <a href="/posts/2015-04-14_TypeScript-gotcha-number-two.html">Continue Reading...</a>
@@ -65,6 +76,16 @@
     </div>
     <div class="panel-body preview">
         <div class="preview-text">    
+<!--programming,javascript,web-->
+
+<h1>JavaScript inheritance and "classes"</h1>
+
+<p>Since I have not written anything in a long time I decided to start again on a fairly easy topic.
+So in this post I will give my insights to JS inheritance and the "class" system, however slim they may be.</p>
+
+<h2>Why "classes"?</h2>
+
+<p>You might wonder why I write "classes" instead of classes (no quotes) in the context of JavaScript.</p>
         </div>
         <div class="text-center preview-continue">
             <a href="/posts/2015-04-08_JavaScript-inheritance.html">Continue Reading...</a>
@@ -93,6 +114,18 @@
     </div>
     <div class="panel-body preview">
         <div class="preview-text">    
+<!--hacking, metasploit, dns-->
+
+<h1>Another go</h1>
+
+<p>After the <a href="http://filimon-danopoulos.github.io/posts/2014-11-23_Metasploitable-2-part-five.html">last</a> flop I had high hopes of actually 
+getting a shell, preferably root. So I was a bit disappointed that the service that was next in line was:</p>
+
+<pre><code>53/tcp    open  domain      ISC BIND 9.4.2
+</code></pre>
+
+<p>Since I had never exploited this type of service before I was not sure where to begin. So it was time for some research
+in order to figure out what to do. I have to admit that I know next to nothing about this service!</p>
         </div>
         <div class="text-center preview-continue">
             <a href="/posts/2014-11-29_Metasploitable-2-part-six.html">Continue Reading...</a>
@@ -121,6 +154,16 @@
     </div>
     <div class="panel-body preview">
         <div class="preview-text">    
+<!--programming, gotchas, work, csharp-->
+
+<h1>Copying objects</h1>
+
+<p>Today something weird happened at work. A couple of weeks ago I updated a caching solution to return a copy of the cached object since we
+had a couple of issues with mutation of the cachee. When I got in to the office today I had a mail in my inbox that pointed to said commit 
+and claiming it was the culprit of an issue with some values turning up as 25.0 instead of 25.</p>
+
+<p>We had previously experienced issues with locale so I assumed that some locale-specific value got cached and depended on mutability to
+function correctly. After pursuing that lead for a while I didn't feel it. So I looked for other alternatives.</p>
         </div>
         <div class="text-center preview-continue">
             <a href="/posts/2014-11-24_Copying-objects.html">Continue Reading...</a>
@@ -149,6 +192,19 @@
     </div>
     <div class="panel-body preview">
         <div class="preview-text">    
+<!--hacking, metasploit, smtp-->
+
+<h1>Mailploitation</h1>
+
+<p>For this post I will target the SMTP server running on the Metasploitable 2 VM I have set up as my target. By now my approach
+should be clear:</p>
+
+<ol>
+<li>Identify target</li>
+<li>Find vulnerability</li>
+<li>Craft exploit</li>
+<li>???</li>
+</ol>
         </div>
         <div class="text-center preview-continue">
             <a href="/posts/2014-11-23_Metasploitable-2-part-five.html">Continue Reading...</a>
@@ -177,6 +233,17 @@
     </div>
     <div class="panel-body preview">
         <div class="preview-text">    
+<!--hacking-->
+
+<h1>THC Hydra</h1>
+
+<p>In the shadow of my previous write up about my Metasploitable 2 hacking I want to make a quick point about brute forcing.
+For all the online brute force attacks I launch, I use THC Hydra. There are other tools out there but I don't prefer brute
+forcing as an attack vector so I have not invested time in learning much about them.</p>
+
+<p>Hydra is awesome and works really well. When used correctly a brute force attack can be very fruit full as we saw 
+in <a href="http://filimon-danopoulos.github.io/posts/2014-11-15_Metasploitable-2-part-two.html">part two</a>.
+In fact both the FTP hack and the recent telnet "hack" could have been replaced by a brute force attack. </p>
         </div>
         <div class="text-center preview-continue">
             <a href="/posts/2014-11-22_THC-Hydra.html">Continue Reading...</a>
@@ -205,6 +272,19 @@
     </div>
     <div class="panel-body preview">
         <div class="preview-text">    
+<!--hacking, metasploit, telnet-->
+
+<h1>Back to basics</h1>
+
+<p>This is the fourth part of my series about hacking a Metasploitable 2 VM. You can find the previous posts here:</p>
+
+<ul>
+<li><a href="http://filimon-danopoulos.github.io/posts/2014-11-12_Metasploitable-2-part-one.html">Part one</a></li>
+<li><a href="http://filimon-danopoulos.github.io/posts/2014-11-15_Metasploitable-2-part-two.html">Part two</a></li>
+<li><a href="http://filimon-danopoulos.github.io/posts/2014-11-17_Metasploitable-2-part-three.html">Part three</a></li>
+</ul>
+
+<p>In this post I will continue down the list of services that the <code>nmap</code> scan I did in part one generated:</p>
         </div>
         <div class="text-center preview-continue">
             <a href="/posts/2014-11-22_Metasploitable-2-part-four.html">Continue Reading...</a>
@@ -233,6 +313,17 @@
     </div>
     <div class="panel-body preview">
         <div class="preview-text">    
+<!--programming, web, work-->
+
+<h1>KISS</h1>
+
+<p>I know I said that I would do a hacking write up for my next post but I wanted to write this first, next post will be about hacking, <em>I promise</em>.  </p>
+
+<p><a href="http://en.wikipedia.org/wiki/KISS_principle">Keep it simple, stupid</a> is my favorite design principle as it is universally 
+applicable, and is one of the few things I learned during programming that applies to the world outside of software development. </p>
+
+<p>At work, I recently had a scenario where a more KISS-oriented approached would have saved us a couple of hours. Since it is work related
+I won't give any specific examples, I don't want to get in trouble. In order to get the gist of the issue some information is required, </p>
         </div>
         <div class="text-center preview-continue">
             <a href="/posts/2014-11-20_KISS.html">Continue Reading...</a>
@@ -261,6 +352,16 @@
     </div>
     <div class="panel-body preview">
         <div class="preview-text">    
+<!--blog-->
+
+<h1>Blog updates</h1>
+
+<p>I have recently made a couple of updates to the layout of the blog, added a couple of sections 
+and I am planning to add a couple more. Here follows a short summary of what has been done.</p>
+
+<h2>Changes</h2>
+
+<p>The layout is now simplified so that individual posts no longer have a blue frame/header/footer. Those are only visible for the previews of each post. I also updated the back buttons of the posts so that they are simple links instead. A general overhaul of small details on the blog to make it more pleasant for mobile users.</p>
         </div>
         <div class="text-center preview-continue">
             <a href="/posts/2014-11-18_Blog-updates.html">Continue Reading...</a>
@@ -289,6 +390,17 @@
     </div>
     <div class="panel-body preview">
         <div class="preview-text">    
+<!--hacking, metasploit, ssh-->
+
+<h1>SSH follow up</h1>
+
+<p>Since I did my last post I have been meaning to write a follow up on the failed attempt at using: <code>auxiliary/scanner/ssh/ssh_enumusers</code>.
+I wanted to figure out what went wrong and if the vulnerability was even applicable. Since I have a list of all the users now I can try 
+the enumeration again with the known users as the user name list.</p>
+
+<h2>Another go</h2>
+
+<p>I managed to get a list of al the users during <a href="https://filimon-danopoulos.github.io/posts/2014-11-15_Metasploitable-2-part-one.html">this</a></p>
         </div>
         <div class="text-center preview-continue">
             <a href="/posts/2014-11-17_Metasploitable-2-part-three.html">Continue Reading...</a>

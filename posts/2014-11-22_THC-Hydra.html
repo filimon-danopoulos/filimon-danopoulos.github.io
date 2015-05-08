@@ -28,6 +28,39 @@
 </ul>     
 <hr>
 <div class="post-content">
+<!--hacking-->
+
+<h1>THC Hydra</h1>
+
+<p>In the shadow of my previous write up about my Metasploitable 2 hacking I want to make a quick point about brute forcing.
+For all the online brute force attacks I launch, I use THC Hydra. There are other tools out there but I don't prefer brute
+forcing as an attack vector so I have not invested time in learning much about them.</p>
+
+<p>Hydra is awesome and works really well. When used correctly a brute force attack can be very fruit full as we saw 
+in <a href="http://filimon-danopoulos.github.io/posts/2014-11-15_Metasploitable-2-part-two.html">part two</a>.
+In fact both the FTP hack and the recent telnet "hack" could have been replaced by a brute force attack. 
+So what's the catch? Quite a few actually:</p>
+
+<ol>
+<li>In order to be effective a brute force attack requires a user name or a short list of user names. The attack takes exponentially
+longer if this information is not known. You can skip brute force as an viable strategy if you can't get your hand of this information.</li>
+<li>It's noisy. In order to be effective you will generate a lot of traffic. This is easily intercepted and you can get compromised. </li>
+<li>You will leave traces in logs, a lot of them can be cleaned up you are root, but if you can't get root then you are out of luck.</li>
+<li>You will have to wait, a brute force attack by definition a slow process.</li>
+<li>It's easy to mitigate, a simple delay of 2 seconds for a failed authentication attempt makes all but the simplest attacks pointless.</li>
+</ol>
+
+<p>In some scenarios brute forcing can be very effective, for example if you manage to find out things like:</p>
+
+<ul>
+<li>User name, a known user name makes all the difference.</li>
+<li>Password policy, if you know that the password has to be two numbers a symbol and any number of letters, in any order. Most people will use
+a password that matches the following regular expression /^[0-9]{0-2}.?\w.*?$/, even if the number might as well have been last.</li>
+<li>If you happen know the network well enough that getting caught by and IDS or other logging system is not an issue.</li>
+<li>The targeted service does not protect it self from brute force attacks.</li>
+</ul>
+
+<p>Then a brute force attack might be in order, otherwise? Stick to attacks that exploit flaws in software rather than people!</p>
 </div>
 <hr>
 <div class="container-fluid">

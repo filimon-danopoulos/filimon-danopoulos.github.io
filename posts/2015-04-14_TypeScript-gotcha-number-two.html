@@ -28,6 +28,178 @@
 </ul>     
 <hr>
 <div class="post-content">
+<!--typescript,work,programming,knockout-->
+
+<h1>TypeScript constructors - another gotcha</h1>
+
+<p>I am refactoring a lot of TypeScript code that has explicit AMD modules at work right now.
+It uses the JavaScript MVVM libray Knockout and in addition to the AMD modules it has a
+bit of "old" TypeScript to glue it together.</p>
+
+<h2>Knockout, briefly</h2>
+
+<p>This library has a construct that is called a computed observable.
+It basically tracks other values (observables) and outputs a value:</p>
+
+<pre><code>var someObservable = ko.observable(2);
+var someComputed = ko.computed(() =&gt; {
+    return someObservable()+2;
+});
+
+someComputed(); // Gives 2+2 = 4
+</code></pre>
+
+<p>The callback passed to the computed is executed by Knockout when Knockout wants to. It will evaluate at least once during initialization, and then every time the observable changes.
+This is a part of the issue. Any more details than this are outside of the scope of this post.
+Look at the official documentation <a href="http://knockoutjs.com/documentation/introduction.html">here</a> for more details.</p>
+
+<h2>The TypeScript</h2>
+
+<p>The explicit AMD modules prevents us from using classes, restricts our selection of tools
+and generally makes for a worse development experience.</p>
+
+<p>The plan is to convert them so that they are classes and use <code>import/export</code> instead.
+Basically I have this:</p>
+
+<pre><code>define(["dependency"], (dependency) =&gt; {
+    function Module() {}
+
+    return Module;
+});
+</code></pre>
+
+<p>and I want to convert it to this:</p>
+
+<pre><code>import dependency = require("dependency");
+class Module {}
+
+export = Module;
+</code></pre>
+
+<p>The idea is that the output should be exactly the same as before, and everything should still work
+as before.</p>
+
+<h2>Problems...</h2>
+
+<p>Now something interesting happens, when I convert this code (slimed down example of my case):</p>
+
+<pre><code>define([], () =&gt; {
+    var someFunction = () =&gt; {
+        var somePrivate = 2;
+        this.somePublic = 5;
+    };
+
+    return someFunction;
+});
+</code></pre>
+
+<p>I reason that everything declared as a <code>var</code> should be private, everything attached to <code>this</code>
+should be public. This initially gives me:</p>
+
+<pre><code>class SomeClass {
+    private somePrivate: number = 2;
+    public somePublic: number = 5;
+}
+
+export = SomeClass;
+</code></pre>
+
+<p>I then reason I should use a constructor for initial assignment.
+But for a reason that will apparent soon I only do it for part of the class:</p>
+
+<pre><code>class SomeClass {
+    private somePrivate: number;
+    constructor() {
+        this.somePrivate  = 2;
+    }
+    public somePublic: number = 5;
+}
+</code></pre>
+
+<p>This in turn generates something similar to this:</p>
+
+<pre><code>function SomeClass {
+    this.somePublic = 5;
+    this.somePrivate  = 2;
+}
+</code></pre>
+
+<p>That is <code>somePublic</code> is assigned first and then the contents of the TypeScript constructor
+are executed. This makes total sense, even if I got stuck on this at first glance.
+If the order was reversed you could not use the class's members in the constructor since
+some of them might be assigned just as I do here, i.e. outside of the constructor. If some private
+had the value <code>() =&gt; {}</code>, one would expect to be able to execute that it the constructor.</p>
+
+<p>Now this leads to the problem, the reason I did not include <code>somePublic</code> in the constructor
+to begin with is that it is a computed observable, in my case it took up about ten lines of code.
+Instead of my constructor growing out of controller I opted for assignment outside of the constructor. This example uses observables and computed observables in order to demonstrate my issue:</p>
+
+<pre><code>class SomeClass {
+    private somePrivate;
+    constructor() {
+        this.somePrivate  = ko.observable(2);
+    }
+    public somePublic = ko.computed(() =&gt; {
+        return this.somePrivate()+2;
+    });
+}
+</code></pre>
+
+<p>When this code is compiled I get:</p>
+
+<pre><code>function SomeClass {
+    this.somePublic = ko.computed(function() {
+        return this.somePrivate()+2;
+    });
+    this.somePrivate = ko.observable(2);
+}
+</code></pre>
+
+<p>This will obviously not behave as intended since the computed will be evaluated upon instantiation, it
+will try to use <code>this.somePrivate</code> that happens to be <code>undefined</code>. So, we get an error.</p>
+
+<h2>How I solved it</h2>
+
+<p>I actually didn't solve it. I decided that it was to large a refactoring for to little gain.
+There a lot of possible solutions to the issue with the computeds:</p>
+
+<ul>
+<li>Declare everything in the constructor. By far the easiest, leads to 200 row constructor.</li>
+<li>Declare nothing in the constructor, and everything in the right order in the body of the class.
+Way to easy to loose track of the order in a class, also shitty, nonintuitive design.</li>
+<li>Call a method that set up computeds from the constructor so that the body of the constructor doesn't grown.
+The hybrid of the two solutions above, requires the rest of the developers to follow conventions, this is hard.</li>
+<li>Use the builder pattern to handle creation. By far the best solution, since this can easily be tested and
+automated. However it deviates to much from the original code, one of the requirements was that the code be similar.</li>
+</ul>
+
+<p>There are probably a couple more. The point is that I could not solve the issue the way I would have wanted.
+Instead I decided on typing as much as possible with interfaces. So if I had:</p>
+
+<pre><code>define([], () =&gt; {
+    return {
+        whatever: ...
+    }
+});
+</code></pre>
+
+<p>I will now have:</p>
+
+<pre><code>interface ISomeModule {
+    whatever: any;
+}
+
+define([], (): ISomeModule =&gt; {
+    return &lt;ISomeModule&gt; {
+        whatever: ...
+    }
+});
+</code></pre>
+
+<p>It is far from a perfect solution, and I will have to refactor some code to use objects instead of constructor functions but
+I this that is a small change in relation to converting everything to <code>import/export</code> and classes. Even if it is not perfect, it does improve the tooling significantly and it only slightly modifies the output (in some cases not a all).</p>
+
+<p>I guess some times you have to settle for good enough.</p>
 </div>
 <hr>
 <div class="container-fluid">
