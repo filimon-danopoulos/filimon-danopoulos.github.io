@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Programming and stuff...</title>
+
+        
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/css/blog.css">
+        
+         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <header class="text-center jumbotron hidden-xs hidden-sm">
+            <h1 class="blog-title">Programming and stuff...</h1>
+            <p class="blog-description text-muted">
+                A simple blog where I write about programming, hacking and web development. I write mostly about mostly JavaScript and C# but
+                I might write of anything else I might think of.
+            </p>
+        </header>   
+        <section class="container">
+<ul class="nav nav-pills">
+    <li role="presentation" class=""><a href="/">Home</a></li>
+    <li role="presentation" class=""><a href="/archive">Archive</a></li>
+    <li role="presentation" class=""><a href="/about">About</a></li>
+</ul>     
+<hr>
+<div class="post-content">
+<!--programming-->
+
+<h1>What is <code>private</code>?</h1>
+
+<p>I was working with an issue in an Angular application written in TypeScript,
+and since I have just re-read the wonderful book <a href="http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882/">Clean Code</a>,
+I decided to write the domain logic in TypeScript objects instead of Angular services.</p>
+
+<p>During the implementation I had (prior to refactoring) an object with two factory
+methods and a couple of private set methods, similar to this:</p>
+
+<pre><code>class Example {
+    private field: number;
+
+    private setField(value: number) {
+        // validation logic
+        this.number = number;
+    }
+
+    public static createInstance(value: number) {
+        var instance = new Example();
+        // logic
+        return instance;
+    }
+}
+</code></pre>
+
+<p>I was facing a dilema of making <code>setField</code> public so that I could call it from the
+factory method or rewriting the code to utilize inheritance. For entirely different
+reassons I later decided on the inheritance path, but before I came to that conclusion I
+tried getting the first approach to work.</p>
+
+<h2>I learned something new!</h2>
+
+<p>The first thing I did was just to add a call to <code>setField</code> in the factory method:</p>
+
+<pre><code>public static createInstance(value: number) {
+    var instance = new Example();
+    instance.setField(value);
+    return instance;
+}
+</code></pre>
+
+<p>I made another unrelated change and compiled, to my big surprise I had no errors.
+First I thought this was a TypeScript oddity so I added the following after the class:</p>
+
+<pre><code>var temp = new Example();
+temp.setField(42);
+</code></pre>
+
+<p>This did not compile since <code>setField</code> is private, as expected. Now I wanted to know
+if this was TypeScript specific so I tried the following C# example:</p>
+
+<pre><code>using System;
+
+public class Program
+{
+    private void Log(string message)
+    {
+        Console.WriteLine(message);
+    }
+
+    public static void Main()
+    {
+        var instance = new Program();
+        instance.Log("Hello World");
+    }
+}
+</code></pre>
+
+<p>Sure enough this compiles and runs properly. So does the following Java code:</p>
+
+<pre><code>public class Program {
+    private void Log(String message) {
+        System.out.println(message);
+    }
+    public static void main(String[] args) {
+        Program instance = new Program();
+        instance.Log("Hello World");
+    }
+}
+</code></pre>
+
+<p>Thinking back on it this makes at least some sense. I have previously made <code>private</code> synonymous
+with <em>in this class only</em> which removed almost all cases where a private method
+would be called via <code>instance.methodName()</code> from my mind. I would always call
+private methods via <code>this.method()</code> or straight up <code>method()</code>.</p>
+
+<p>This particular feature really comes in handy when creating static factory methods
+and similar functions that act on an instance of one self, so I am glad I learned about this.
+I really enjoyed finding this since it taught me something pretty fundamental that I probably
+should have known already.</p>
+</div>
+<hr>
+<div class="container-fluid">
+    <div class="row text-muted">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-left">
+            Words: 418
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+            <a href="/" class="back-link"> Home...</a>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-right">
+            2015-05-08
+        </div>
+    </div> 
+</div>
+<script src="/js/post.js"></script>
+        </section>
+        <footer class="text-center text-muted">
+            <a href="https://github.com/filimon-danopoulos/">&copy; Filimon Danopoulos</a>
+        </footer>
+    </body>
+</html>
