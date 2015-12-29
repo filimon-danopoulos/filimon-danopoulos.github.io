@@ -5,7 +5,7 @@
 Robert C. Martin ("Uncle Bob") is another classic. In my opinion this is **the** book to read in order to become
 a better developer.
 
-Where [The Pragmatic Programmer](http://filimon-danopoulos.github.io/posts/2015-05-29_Book-Review-The-Pragmatic-Programmer.html) is
+Where [The Pragmatic Programmer](http://filimon-danopoulos.github.io/posts/2015-05-29_Book-Review-The-Pragmatic-Programmer/) is
 a book about mentality, this book is all about action. You will learn a wide selection of techniques
 for writing good, clean code. Among the things you well learn we find things like:
 
