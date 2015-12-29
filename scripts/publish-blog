@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+
+# This scripts helps with publishing the blog 
+
+bash ./generate
+
+git add -A
+
+git commit -m "Generated site"
+
+git push 
+
