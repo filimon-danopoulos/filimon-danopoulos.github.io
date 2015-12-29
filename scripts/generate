@@ -13,7 +13,7 @@ generatePost() {
     htmlPostFileName=$(echo "$postSource" | sed -e 's|released/|posts/|' -e 's|.md|/index\.html|')
 
     # Get folder name from file name by removing /index.html
-    htmlPostFolderName=${htmlPostFileName::-11}
+    htmlPostFolderName=${htmlPostFileName::-10}
 
     # Create folder
     mkdir "$htmlPostFolderName"
@@ -32,12 +32,9 @@ generatePost() {
     cat "$htmlPostFileName" | sed "s|--postheader--|$postHeader|i" > tmp
     mv tmp "$htmlPostFileName"
 
-    # Add href to link in header
-    cat "$htmlPostFileName" | sed "s|--href--|/$htmlPostFileName|i" > tmp
-    mv tmp "$htmlPostFileName"
-
     # Add word count metadata
     metadata="Words: "$(wc -w "$postSource" | cut -d' ' -f1)
+    
     # Insert the metadata into the HTML file placeholder
     cat "$htmlPostFileName" | sed "s/--metadata--/$metadata/i" > tmp
     mv tmp "$htmlPostFileName"
@@ -81,7 +78,7 @@ generatePostPreview() {
 
 
     # Generate the post name from the source markdown file
-    htmlPostFileName=$(echo $postSource | sed -e 's|released/|posts/|' -e 's|\.md|/index\.html|')
+    htmlPostFileName=$(echo $postSource | sed -e 's|released/|posts/|' -e 's|\.md|/|')
 
     # Add href to link in header and in continue button
     cat "$previewFileName" | sed "s|--href--|/$htmlPostFileName|g" > tmp
