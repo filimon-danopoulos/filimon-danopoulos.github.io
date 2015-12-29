@@ -2,7 +2,7 @@
 
 # This scripts helps with publishing the blog
 
-bash ./generate
+bash ./scripts/generate
 
 git pull
 
