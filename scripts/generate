@@ -34,7 +34,7 @@ generatePost() {
 
     # Add word count metadata
     metadata="Words: "$(wc -w "$postSource" | cut -d' ' -f1)
-    
+
     # Insert the metadata into the HTML file placeholder
     cat "$htmlPostFileName" | sed "s/--metadata--/$metadata/i" > tmp
     mv tmp "$htmlPostFileName"
@@ -78,10 +78,10 @@ generatePostPreview() {
 
 
     # Generate the post name from the source markdown file
-    htmlPostFileName=$(echo $postSource | sed -e 's|released/|posts/|' -e 's|\.md|/|')
+    postUrl=$(echo $postSource | sed -e 's|released/|posts/|' -e 's|\.md|/|')
 
     # Add href to link in header and in continue button
-    cat "$previewFileName" | sed "s|--href--|/$htmlPostFileName|g" > tmp
+    cat "$previewFileName" | sed "s|--href--|/$postUrl|g" > tmp
     mv tmp "$previewFileName"
 
     # Add word count metadata
@@ -206,7 +206,7 @@ do
     mv tmp archiveEntry
 
     # Create url
-    postUrl=$(echo $postSource | sed -e 's/released\//posts\//' -e 's/\.md/\.html/')
+    postUrl=$(echo $postSource | sed -e 's|released/|posts/|' -e 's|\.md|/|')
     # Replace placeholder with url
     cat archiveEntry |  sed "s|--archive-href--|/$postUrl|i" > tmp
     mv tmp archiveEntry
