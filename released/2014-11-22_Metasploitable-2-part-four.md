@@ -3,9 +3,9 @@
 
 This is the fourth part of my series about hacking a Metasploitable 2 VM. You can find the previous posts here:
 
-* [Part one](http://filimon-danopoulos.github.io/posts/2014-11-12_Metasploitable-2-part-one.html)
-* [Part two](http://filimon-danopoulos.github.io/posts/2014-11-15_Metasploitable-2-part-two.html)
-* [Part three](http://filimon-danopoulos.github.io/posts/2014-11-17_Metasploitable-2-part-three.html)
+* [Part one](http://filimon-danopoulos.github.io/posts/2014-11-12_Metasploitable-2-part-one/)
+* [Part two](http://filimon-danopoulos.github.io/posts/2014-11-15_Metasploitable-2-part-two/)
+* [Part three](http://filimon-danopoulos.github.io/posts/2014-11-17_Metasploitable-2-part-three/)
 
 In this post I will continue down the list of services that the `nmap` scan I did in part one generated:
 
