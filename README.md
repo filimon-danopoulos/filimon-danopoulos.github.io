@@ -9,15 +9,17 @@ roughly document the components of the blog.
 This blog has a couple requirements in order to function correctly.
 First and fore most you have to install the markdown compiler by:
 
-    $ sudo pacman -S markdown
+    $ sudo pacman -S markdown # for arch based
+    $ sudo apt-get install markdown # for debian based
 
 A functioning BASH environment is also a requirement. No other "strange" funtions are used.
 The site generation is composed mainly of `cat`, `sed`, `mv` and `echo` calls, so it should
 function on most Linux systems.
 
-In order to publish anythign `git` is required, get it by:
+In order to publish anything `git` is required, get it by:
 
-    $ sudo pacman -S git
+    $ sudo pacman -S git # for arch based
+    $ sudo apt-get install git # for debian based
 
 That probably covers all the dependencies.
 
