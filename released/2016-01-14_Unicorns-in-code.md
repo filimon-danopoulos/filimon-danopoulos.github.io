@@ -1,4 +1,4 @@
-<!---work,architecture,programming-->
+<!--work,architecture,programming-->
 # Unicorns in software architecture
 
 Most small to medium sized development teams produce a lot of what I like to call Unicorns. 
